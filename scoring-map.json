@@ -1,5 +1,5 @@
 {
-  "version": "scene-v3.0",
+  "version": "scene-v3.1",
   "axes": {
     "control": {
       "label": "盘权处理",
@@ -45,13 +45,14 @@
       "reason": "开场就主动接应或拉开空间，提供基本进攻意识线索。"
     },
     "p01-extra1": {
-      "scores": {},
-      "ability": {
-        "space": 2,
-        "teamwork": 2
+      "scores": {
+        "S": 1
       },
-      "reason": "在这一具体场景中仍依赖指令或基本动作，提供初阶线索。",
-      "developing": true
+      "ability": {
+        "space": 4,
+        "teamwork": 4
+      },
+      "reason": "主动落位并保持阵型，不再视作依赖指令。"
     },
     "p02-a": {
       "scores": {
@@ -154,7 +155,8 @@
     "p06-extra1": {
       "scores": {},
       "ability": {},
-      "reason": "没有练过飞扑不代表水平低，不计入能力推断。"
+      "reason": "明确尚不会 Layout，按本版娱乐刻度排除 L7–L9；不将安全选择等同于低阶或彩蛋。",
+      "rangeCeiling": 6
     },
     "p07-a": {
       "scores": {
@@ -311,10 +313,10 @@
     "p12-extra1": {
       "scores": {},
       "ability": {
-        "control": 2,
-        "reading": 2
+        "control": 1,
+        "reading": 1
       },
-      "reason": "在这一具体场景中仍依赖指令或基本动作，提供初阶线索。",
+      "reason": "接盘后注意力仍集中在盘本身，提供出盘观察尚未熟练的线索。",
       "developing": true
     },
     "p13-a": {
@@ -687,6 +689,182 @@
       "reason": "在这一具体场景中仍依赖指令或基本动作，提供初阶线索。",
       "developing": true,
       "egg": "IMFW"
+    },
+    "p01-extra2": {
+      "scores": {
+        "H": 1,
+        "G": 1
+      },
+      "ability": {
+        "control": 5,
+        "reading": 4
+      },
+      "reason": "接 pull 后主动抢节奏，提供启动组织意识；不等同于传接成功率。"
+    },
+    "p01-extra3": {
+      "scores": {
+        "G": 1,
+        "F": 1
+      },
+      "ability": {
+        "pressure": 2
+      },
+      "reason": "明知接 pull 可能掉盘仍优先耍帅，反映盘权风险取舍。"
+    },
+    "p02-extra1": {
+      "scores": {
+        "C": 1,
+        "G": 1
+      },
+      "ability": {
+        "space": 5
+      },
+      "reason": "利用防守失位变向创造接盘窗口，提供空间意识线索。"
+    },
+    "p04-extra1": {
+      "scores": {
+        "G": 1,
+        "W": 1
+      },
+      "ability": {},
+      "reason": "偏好或社交行为，不据此推断技术水平。",
+      "egg": "HUCK"
+    },
+    "p05-extra1": {
+      "scores": {
+        "H": 1,
+        "C": 1
+      },
+      "ability": {},
+      "reason": "偏好或社交行为，不据此推断技术水平。"
+    },
+    "p05-extra2": {
+      "scores": {
+        "C": 2
+      },
+      "ability": {},
+      "reason": "偏好或社交行为，不据此推断技术水平。"
+    },
+    "p07-extra2": {
+      "scores": {
+        "V": 1,
+        "W": 1
+      },
+      "ability": {},
+      "reason": "偏好或社交行为，不据此推断技术水平。"
+    },
+    "p09-extra2": {
+      "scores": {},
+      "ability": {
+        "pressure": 1,
+        "control": 2
+      },
+      "reason": "高 stall 下动作失控，提供压力处理尚不稳定的线索。",
+      "developing": true
+    },
+    "p10-extra1": {
+      "scores": {},
+      "ability": {
+        "control": 1,
+        "reading": 1
+      },
+      "reason": "初入场的自述只作弱线索，须结合其他场景；不自动归为彩蛋。",
+      "developing": true
+    },
+    "p10-extra2": {
+      "scores": {
+        "A": 2,
+        "F": 1
+      },
+      "ability": {},
+      "reason": "偏好或社交行为，不据此推断技术水平。"
+    },
+    "p10-extra3": {
+      "scores": {
+        "V": 2
+      },
+      "ability": {},
+      "reason": "偏好或社交行为，不据此推断技术水平。"
+    },
+    "p12-extra2": {
+      "scores": {
+        "S": 1,
+        "C": 1
+      },
+      "ability": {
+        "control": 4,
+        "teamwork": 4
+      },
+      "reason": "选择回传重置是正常分工，不因回给 handler 判作新手。"
+    },
+    "p16-extra1": {
+      "scores": {
+        "V": 1,
+        "S": 1
+      },
+      "ability": {},
+      "reason": "偏好或社交行为，不据此推断技术水平。"
+    },
+    "p16-extra2": {
+      "scores": {
+        "S": 1,
+        "C": 1
+      },
+      "ability": {
+        "pressure": 5,
+        "control": 4
+      },
+      "reason": "贴身压力下寻找稳定回传，提供盘权处理线索。"
+    },
+    "p17-extra1": {
+      "scores": {
+        "F": 1
+      },
+      "ability": {},
+      "reason": "偏好或社交行为，不据此推断技术水平。"
+    },
+    "p17-extra2": {
+      "scores": {
+        "V": 1,
+        "F": 1
+      },
+      "ability": {},
+      "reason": "偏好或社交行为，不据此推断技术水平。"
+    },
+    "p20-extra1": {
+      "scores": {
+        "F": 2
+      },
+      "ability": {},
+      "reason": "偏好或社交行为，不据此推断技术水平。"
+    },
+    "p23-extra2": {
+      "scores": {
+        "C": 2,
+        "G": 1
+      },
+      "ability": {
+        "space": 5
+      },
+      "reason": "下底拉伸纵深是合理接应选择，不作为盲目 huck 彩蛋线索。"
+    },
+    "p24-extra1": {
+      "scores": {
+        "F": 2
+      },
+      "ability": {},
+      "reason": "偏好或社交行为，不据此推断技术水平。"
+    },
+    "p28-extra1": {
+      "scores": {
+        "A": 1
+      },
+      "ability": {
+        "pressure": 2,
+        "reading": 2
+      },
+      "reason": "跟随要盘声立即出手，缺少独立确认窗口的线索。",
+      "developing": true
     }
   },
   "notes": "文案在 questions.json；本文件按稳定 option id 映射。中性偏好不携带 ability。线索分不是实测水平。"

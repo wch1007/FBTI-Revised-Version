@@ -45,15 +45,11 @@ export async function downloadReport(result, persona) {
   text('四维偏好 · 风格不分高低', 64, y, 28, ink, true); y += 49;
   for (const d of result.dimensions) {
     text(`${d.left} / ${d.right}`, 64, y, 23);
-    const label = d.unknown ? '线索不足' : d.tied ? '两边都有一点' : `${d.pct > 50 ? d.left : d.right} ${Math.max(d.pct, 100 - d.pct)}%`;
+    const label = d.unknown ? '随场发挥' : d.tied ? '两边都有一点' : `${d.pct > 50 ? d.left : d.right} ${Math.max(d.pct, 100 - d.pct)}%`;
     text(label, 675, y, 21, muted);
     rect(64, y + 17, 872, 9, '#dde3d3', 4); rect(64, y + 17, Math.max(4, 872 * d.pct / 100), 9, d.unknown ? '#adb7a6' : '#81965f', 4); y += 72;
   }
-  y += 18; text('下一次上场，解锁一小步', 64, y, 28, ink, true);
-  y = wrap(result.nextStep, 64, y + 48, 868, 24, ink, 41);
-  y = wrap(`判断线索：${result.consistency}。根据同一套 30 道场景题中的盘权、空间、阅读、决策与配合推断。`, 64, y + 21, 868, 21, muted, 35);
-  y = wrap('场景题无法证明真实传接成功率与比赛履历；中心预估最高 L7，区间最高 L9。', 64, y + 10, 868, 19, muted, 33);
-  y = wrap('仅供娱乐。L0–L9 为本站自定义刻度，±2 是固定趣味估计范围，边界截至 L0–L9；不是统计置信区间、技术认证或国家队选拔依据。人格优势是风格描述。', 64, y + 17, 868, 19, muted, 33);
+  y = wrap('趣味预估，上下浮动最多 2 级，以参考范围为准。人格和等级仅供娱乐，真正的实力，场上见。', 64, y + 18, 868, 21, muted, 35);
   text('原作 RED / 红姐 · 改编 wch1007', 64, y + 30, 19, muted);
   text('wch1007.github.io/FBTI-Revised-Version/', 64, y + 68, 21, ink, true);
   const output = document.createElement('canvas'); output.width = 1000; output.height = y + 106;

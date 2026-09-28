@@ -1,4 +1,4 @@
-export const VERSION = 'fbti-v3.0';
+export const VERSION = 'fbti-v3.1';
 export const DIMENSIONS = [
   { pair: 'HC', title: '上场角色', left: '组织传盘', right: '跑位接盘' },
   { pair: 'SG', title: '机会选择', left: '稳稳来', right: '敢尝试' },
@@ -34,6 +34,7 @@ export function validateQuestions(questions, mapping) {
       const rule = mapping.rules[o.id];
       if (!rule || !rule.scores || !rule.ability || !rule.reason) throw new Error(`选项缺少结果映射：${o.id}`);
       if (rule.egg && !['IMFW', 'HUCK'].includes(rule.egg)) throw new Error('未知彩蛋');
+      if (rule.rangeCeiling !== undefined && (!Number.isInteger(rule.rangeCeiling) || rule.rangeCeiling < 0 || rule.rangeCeiling > 9)) throw new Error('等级范围上限无效');
       for (const [key, value] of Object.entries(rule.scores)) {
         if (!'HCSGVAFW'.includes(key) || key.length !== 1 || !Number.isFinite(value) || value < 0) throw new Error('人格权重无效');
       }
@@ -69,12 +70,14 @@ export function assess(questions, answers, mapping) {
   const scores = Object.fromEntries('HCSGVAFW'.split('').map(k => [k, 0]));
   const eggs = { IMFW: 0, HUCK: 0 };
   const clues = [], developingIds = new Set();
+  let rangeCeiling = 9;
   const buckets = Object.fromEntries(Object.keys(mapping.axes).map(k => [k, []]));
   questions.forEach((q, i) => {
     const o = q.options[answers[i]], rule = mapping.rules[o.id];
     if (!rule) throw new Error(`缺少选项映射：${o.id}`);
     for (const [k, v] of Object.entries(rule.scores)) scores[k] += v;
     if (rule.egg in eggs) eggs[rule.egg]++;
+    rangeCeiling = Math.min(rangeCeiling, rule.rangeCeiling ?? 9);
     if (rule.developing && Object.keys(rule.ability).length) developingIds.add(q.id);
     const signals = Object.entries(rule.ability);
     if (signals.length) clues.push({ question: i + 1, id: o.id, text: o.text, reason: rule.reason, developing: !!rule.developing });
@@ -85,7 +88,9 @@ export function assess(questions, answers, mapping) {
     return { ...d, pct: total ? Math.round(scores[a] / total * 100) : 50, unknown: total === 0, tied: scores[a] === scores[b], code: scores[a] >= scores[b] ? a : b };
   });
   const baseCode = dimensions.map(d => d.code).join('');
-  const code = eggs.IMFW >= 4 ? 'IMFW' : eggs.HUCK >= 2 ? 'HUCK' : baseCode;
+  // A rare persona needs a pattern across distinct scenes, not one joke or
+  // an ordinary beginner answer. Deep cutting alone is not a HUCK cue.
+  const code = eggs.IMFW >= 6 && developingIds.size >= 5 ? 'IMFW' : eggs.HUCK >= 3 ? 'HUCK' : baseCode;
   const evidence = Object.entries(mapping.axes).map(([axis, config]) => {
     const values = buckets[axis];
     const mean = values.length ? values.reduce((s, v) => s + v, 0) / values.length : null;
@@ -103,7 +108,7 @@ export function assess(questions, answers, mapping) {
   // other original scenes. One unfamiliar term or one joke has no such cap.
   const developingCeiling = developing >= 7 ? 1 : developing >= 5 ? 2 : developing >= 3 ? 3 : 7;
   const insufficient = clues.length < 8 || available.length < 4;
-  const ceiling = Math.min(7, developingCeiling, insufficient ? 4 : 7);
+  const ceiling = Math.min(7, rangeCeiling, developingCeiling, insufficient ? 4 : 7);
   const level = Math.max(0, Math.min(ceiling, inferred));
   const spread = available.length ? Math.max(...available.map(e => e.mean)) - Math.min(...available.map(e => e.mean)) : 0;
   const mixed = developing >= 3 && clues.filter(c => !c.developing).length >= 5;
@@ -111,7 +116,7 @@ export function assess(questions, answers, mapping) {
   const ordered = [...available].sort((a, b) => b.mean - a.mean);
   return {
     code, baseCode, dimensions, eggs, evidence, clues, developing, level,
-    low: Math.max(0, level - 2), high: Math.min(9, level + 2),
+    low: Math.max(0, level - 2), high: Math.min(rangeCeiling, level + 2), rangeCeiling,
     levelName: LEVELS[level][0], quip: LEVELS[level][1], nextStep: LEVELS[level][2],
     consistency: insufficient ? '线索较少，暂给宽泛参考' : inconsistent ? '线索有反差，场上再见分晓' : '多处选择相互印证，仍需场上验证',
     inconsistent, insufficient, developingCapped: developingCeiling < inferred,
