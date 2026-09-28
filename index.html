@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#173c32">
+  <meta name="description" content="不懂飞盘术语也能测的 FBTI：30 道人格场景 + 8 道实战自评，解锁你的飞盘人格、隐藏彩蛋和 L0–L9 实力预估。">
+  <title>FBTI 飞盘人格测试 · 新人也能接住的版本</title>
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+  <script type="module" src="app.js"></script>
+</head>
+<body>
+  <header class="site-header shell">
+    <a href="./" class="brand" aria-label="FBTI 首页"><span class="brand-disc">◎</span> FBTI<span class="brand-note">飞盘人格实验室</span></a>
+    <button class="text-button" id="about-button">玩法说明 ↗</button>
+  </header>
+  <main id="app" class="shell" aria-busy="true">
+    <div class="loading">正在把飞盘和题目送过来…</div>
+  </main>
+  <footer class="site-footer shell">
+    <span>每一种队友，都有自己的主场。</span>
+    <span>原作 <a href="https://github.com/leishaforlinminzhi-9/FBTI" target="_blank" rel="noopener">RED / 红姐</a> · 改编 <a href="https://github.com/wch1007/FBTI-Revised-Version" target="_blank" rel="noopener">wch1007</a></span>
+  </footer>
+  <dialog id="about-dialog">
+    <div class="dialog-top"><span class="eyebrow">FIELD NOTES / 玩法说明</span><button id="close-about" class="round-button" aria-label="关闭说明">×</button></div>
+    <h2>不会飞盘，也完全能答。</h2>
+    <p>前 30 题看你喜欢怎样参与飞盘，后 8 题了解真实技术和比赛经历。术语都配了人话解释，没试过就选没试过。</p>
+    <p><strong>人格 ≠ 实力。</strong>四个维度描述偏好；实力主要按传接盘、跑位、防守、规则、实战经历、续航和稳定性加权。场景中多次表示不熟悉时，会小幅下调估计；高等级也需要相应比赛经历。</p>
+    <p><strong>±2 是趣味估计范围</strong>，不是统计置信区间或正式评级。L0–L9 为本站自定义刻度，L9 代表国家队级的参考描述，不能作为选拔凭证。</p>
+    <p>IMFW（我是废物）、HUCK 和草坪快乐居民是自嘲彩蛋，不评价人的价值。人格报告中的“优势”是风格画像，不代表已验证的技术。</p>
+    <p class="muted">不用注册。答案仅保存在当前浏览器，不上传服务器。可在答题页清除；共用设备上建议测完清除。网站托管服务可能记录常规访问日志。</p>
+    <a class="inline-link" href="https://github.com/wch1007/FBTI-Revised-Version#评分说明" target="_blank" rel="noopener">查看公开评分说明 ↗</a>
+  </dialog>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <noscript><p class="shell">这个测试需要启用 JavaScript 才能计算结果。启用后刷新即可。</p></noscript>
+</body>
+</html>

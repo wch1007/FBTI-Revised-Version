@@ -1,0 +1,1317 @@
+[
+  {
+    "dim": "HC",
+    "q": "接到对方的开场盘，轮到我们进攻了。你通常会？",
+    "hint": "开场盘就是每一分开始时，对方向我们掷来的盘。",
+    "options": [
+      {
+        "text": "先和附近队友短传几次，把大家的位置拉开",
+        "type": "H",
+        "scores": {
+          "H": 1,
+          "S": 1
+        }
+      },
+      {
+        "text": "先往前跑或跑向持盘队友，给对方防守出道题",
+        "type": "C",
+        "scores": {
+          "C": 1,
+          "G": 1
+        }
+      },
+      {
+        "text": "开场盘？这啥意思，我先跟着队友学",
+        "type": "special",
+        "scores": {},
+        "egg": "IMFW",
+        "unfamiliar": true
+      },
+      {
+        "text": "先确认我们往哪边攻，暂时不敢乱跑",
+        "type": "special",
+        "scores": {},
+        "egg": "IMFW",
+        "unfamiliar": true
+      }
+    ],
+    "id": "p01",
+    "kind": "personality"
+  },
+  {
+    "dim": "SG",
+    "q": "发现对方漏防了一瞬间，你会？",
+    "hint": "没有标准答案，选最像你平时的反应。",
+    "options": [
+      {
+        "text": "继续短传，等更有把握的机会",
+        "type": "S",
+        "scores": {
+          "S": 2
+        }
+      },
+      {
+        "text": "机会稍纵即逝，马上把盘传过去",
+        "type": "G",
+        "scores": {
+          "G": 2
+        }
+      },
+      {
+        "text": "我连谁漏防了都没看出来，先把盘拿稳",
+        "type": "special",
+        "scores": {},
+        "egg": "IMFW",
+        "unfamiliar": true
+      }
+    ],
+    "id": "p02",
+    "kind": "personality"
+  },
+  {
+    "dim": "VA",
+    "q": "场上局势乱、队友有点懵，你通常怎么带节奏？",
+    "hint": "也可以诚实承认：那个懵的队友就是我。",
+    "options": [
+      {
+        "text": "喊清楚“你去左边、你来接应”，提醒出盘时间",
+        "type": "V",
+        "scores": {
+          "V": 2
+        }
+      },
+      {
+        "text": "先跑出一个空位或稳稳传一盘，带着大家动起来",
+        "type": "A",
+        "scores": {
+          "A": 2
+        }
+      },
+      {
+        "text": "我就是那个懵的队友（呆住）：大脑正在加载",
+        "type": "special",
+        "scores": {},
+        "egg": "IMFW",
+        "unfamiliar": true
+      },
+      {
+        "text": "我就是那个懵的队友（乱跑）：先动起来再说",
+        "type": "special",
+        "scores": {},
+        "egg": "IMFW",
+        "unfamiliar": true
+      }
+    ],
+    "id": "p03",
+    "kind": "personality"
+  },
+  {
+    "dim": "FW",
+    "q": "双方只差最后一分就能赢，你最在意？",
+    "hint": "决胜分：这一分打完，胜负就定了。",
+    "options": [
+      {
+        "text": "打出流畅配合，享受一起打盘的感觉",
+        "type": "F",
+        "scores": {
+          "F": 2
+        }
+      },
+      {
+        "text": "集中精神，用最有效的办法拿下这一分",
+        "type": "W",
+        "scores": {
+          "W": 2
+        }
+      },
+      {
+        "text": "啊，已经最后一分了？我刚弄清比分",
+        "type": "special",
+        "scores": {},
+        "egg": "IMFW",
+        "unfamiliar": true
+      }
+    ],
+    "id": "p04",
+    "kind": "personality"
+  },
+  {
+    "dim": "HC",
+    "q": "你更喜欢在哪种时刻“发光”？",
+    "hint": "组织传盘和跑动接盘，都是团队需要的角色。",
+    "options": [
+      {
+        "text": "拿着盘，把它传到合适的人手里",
+        "type": "H",
+        "scores": {
+          "H": 2
+        }
+      },
+      {
+        "text": "跑到空位，接住队友传来的得分盘",
+        "type": "C",
+        "scores": {
+          "C": 2
+        }
+      },
+      {
+        "text": "先让我成功接住一盘，我就已经在发光了",
+        "type": "special",
+        "scores": {},
+        "egg": "IMFW",
+        "unfamiliar": true
+      }
+    ],
+    "id": "p05",
+    "kind": "personality"
+  },
+  {
+    "dim": "SG",
+    "q": "遇到需要飞扑才可能接住的盘，你更接近哪种想法？",
+    "hint": "飞扑就是身体腾空接盘；没练过、不安全时不扑很正常。",
+    "options": [
+      {
+        "text": "确认练过、落地安全且有把握，才考虑扑",
+        "type": "S",
+        "scores": {
+          "S": 1,
+          "W": 1
+        }
+      },
+      {
+        "text": "在练过且安全的前提下，愿意试试有难度的救盘",
+        "type": "G",
+        "scores": {
+          "G": 1,
+          "F": 1
+        }
+      },
+      {
+        "text": "我还不会飞扑，先练普通接盘，站着也挺好",
+        "type": "special",
+        "scores": {},
+        "egg": "CHILL",
+        "unfamiliar": false
+      },
+      {
+        "text": "飞扑？原来这运动还能离开地面，我先围观",
+        "type": "special",
+        "scores": {},
+        "egg": "CHILL",
+        "unfamiliar": false
+      }
+    ],
+    "id": "p06",
+    "kind": "personality"
+  },
+  {
+    "dim": "VA",
+    "q": "两位队友跑到同一个位置，快“堵车”了，你会？",
+    "hint": "给队友让出空间，比所有人挤在一起更容易接到盘。",
+    "options": [
+      {
+        "text": "喊一声，提醒大家分开站、分开跑",
+        "type": "V",
+        "scores": {
+          "V": 1,
+          "S": 1
+        }
+      },
+      {
+        "text": "自己先跑开让路，示范一个不挤的接应位置",
+        "type": "A",
+        "scores": {
+          "A": 1,
+          "C": 1
+        }
+      },
+      {
+        "text": "我就是堵车的一员：不好意思，我该往哪边走",
+        "type": "special",
+        "scores": {},
+        "egg": "IMFW",
+        "unfamiliar": true
+      }
+    ],
+    "id": "p07",
+    "kind": "personality"
+  },
+  {
+    "dim": "FW",
+    "q": "打完一场，你最想聊什么？",
+    "hint": "赛后复盘，就是一起回顾刚才发生了什么。",
+    "options": [
+      {
+        "text": "刚才那次神配合！也太快乐了吧",
+        "type": "F",
+        "scores": {
+          "F": 2
+        }
+      },
+      {
+        "text": "哪些地方可以改，下次怎么赢",
+        "type": "W",
+        "scores": {
+          "W": 2
+        }
+      },
+      {
+        "text": "下次能不能提前点外卖，我的胃先复盘了",
+        "type": "special",
+        "scores": {},
+        "egg": "IMFW"
+      },
+      {
+        "text": "想问问刚才到底怎么得分的，有点没看懂",
+        "type": "special",
+        "scores": {},
+        "egg": "IMFW",
+        "unfamiliar": true
+      }
+    ],
+    "id": "p08",
+    "kind": "personality"
+  },
+  {
+    "dim": "SG",
+    "q": "对手已经数到 7、8，留给你传盘的时间不多了。你会？",
+    "hint": "持盘时对手会计数催你出盘，通常数到十仍未出手会丢掉盘权。",
+    "options": [
+      {
+        "text": "先找身边能接应的人，往回传也没关系",
+        "type": "S",
+        "scores": {
+          "S": 1,
+          "H": 1
+        }
+      },
+      {
+        "text": "试着传给前方最有机会接住的队友",
+        "type": "G",
+        "scores": {
+          "G": 2
+        }
+      },
+      {
+        "text": "有没有人我先不管，长传开大再说",
+        "type": "special",
+        "scores": {},
+        "egg": "HUCK"
+      },
+      {
+        "text": "还要数数？我刚以为对方在给我加油",
+        "type": "special",
+        "scores": {},
+        "egg": "IMFW",
+        "unfamiliar": true
+      }
+    ],
+    "id": "p09",
+    "kind": "personality"
+  },
+  {
+    "dim": "VA",
+    "q": "面对刚入坑的新队友，你通常会？",
+    "hint": "会教、会陪练、和对方一起学，都算参与。",
+    "options": [
+      {
+        "text": "慢慢讲清楚站哪里、什么时候跑",
+        "type": "V",
+        "scores": {
+          "V": 2
+        }
+      },
+      {
+        "text": "带着一起跑几次，用实际动作示范",
+        "type": "A",
+        "scores": {
+          "A": 2
+        }
+      },
+      {
+        "text": "我就是那个新人，来，我们一起从握盘学起",
+        "type": "special",
+        "scores": {},
+        "egg": "IMFW",
+        "unfamiliar": true
+      }
+    ],
+    "id": "p10",
+    "kind": "personality"
+  },
+  {
+    "dim": "FW",
+    "q": "队友试了个新打法，可惜失误了。你会？",
+    "hint": "这是你的心态偏好，不是技术考试。",
+    "options": [
+      {
+        "text": "先鼓励：想法不错，下次还可以试",
+        "type": "F",
+        "scores": {
+          "F": 2,
+          "G": 1
+        }
+      },
+      {
+        "text": "有点可惜，想想当时有没有更稳妥的选择",
+        "type": "W",
+        "scores": {
+          "W": 2,
+          "S": 1
+        }
+      },
+      {
+        "text": "没看懂哪里失误了，但我可以先说句“没事”",
+        "type": "special",
+        "scores": {},
+        "egg": "IMFW",
+        "unfamiliar": true
+      }
+    ],
+    "id": "p11",
+    "kind": "personality"
+  },
+  {
+    "dim": "SG",
+    "q": "刚接住盘，你的第一眼通常看哪里？",
+    "hint": "接盘后要停下，以一只脚为支点转身找人，不能抱盘往前跑。",
+    "options": [
+      {
+        "text": "找附近接应的队友，准备下一次传递",
+        "type": "S",
+        "scores": {
+          "S": 2,
+          "H": 1
+        }
+      },
+      {
+        "text": "先看看前面的得分区域，有没有一传得分的机会",
+        "type": "G",
+        "scores": {
+          "G": 2
+        }
+      },
+      {
+        "text": "先找到最靠谱的队友，把盘交给他",
+        "type": "S",
+        "scores": {
+          "S": 2,
+          "C": 2
+        }
+      },
+      {
+        "text": "先盯着手里的盘：居然接住了，接下来呢",
+        "type": "special",
+        "scores": {},
+        "egg": "IMFW",
+        "unfamiliar": true
+      }
+    ],
+    "id": "p12",
+    "kind": "personality"
+  },
+  {
+    "dim": "SG",
+    "q": "对方几个人守住一片区域，前面的路被堵了。你会？",
+    "hint": "这叫“联防”：守住区域，而不是每人只盯一个对手。",
+    "options": [
+      {
+        "text": "耐心地左右传，等防线露出空位",
+        "type": "S",
+        "scores": {
+          "S": 2
+        }
+      },
+      {
+        "text": "尝试穿过防线的传盘，直接打开局面",
+        "type": "G",
+        "scores": {
+          "G": 2
+        }
+      },
+      {
+        "text": "联防是啥意思？能不能给我现场画一下",
+        "type": "special",
+        "scores": {},
+        "egg": "IMFW",
+        "unfamiliar": true
+      }
+    ],
+    "id": "p13",
+    "kind": "personality"
+  },
+  {
+    "dim": "VA",
+    "q": "在场下休息时，你怎么看比赛？",
+    "hint": "先选最常做的那件事。",
+    "options": [
+      {
+        "text": "和队友讨论刚才为什么这样跑、这样传",
+        "type": "V",
+        "scores": {
+          "V": 1,
+          "W": 1
+        }
+      },
+      {
+        "text": "盯着盘，给场上的朋友大声加油",
+        "type": "A",
+        "scores": {
+          "A": 1,
+          "F": 1
+        }
+      },
+      {
+        "text": "看哪里缺人、哪里有空位，提醒场上的队友",
+        "type": "A",
+        "scores": {
+          "V": 1,
+          "W": 1
+        }
+      },
+      {
+        "text": "努力看懂规则，目前只能看懂大家在跑",
+        "type": "special",
+        "scores": {},
+        "egg": "IMFW",
+        "unfamiliar": true
+      }
+    ],
+    "id": "p14",
+    "kind": "personality"
+  },
+  {
+    "dim": "FW",
+    "q": "你心目中完美的一场飞盘局是？",
+    "hint": "开心和竞技可以同时存在，这里只选更偏爱的。",
+    "options": [
+      {
+        "text": "人人都能参与、开开心心的朋友局",
+        "type": "F",
+        "scores": {
+          "F": 2
+        }
+      },
+      {
+        "text": "对抗精彩、配合默契，打完很过瘾的比赛",
+        "type": "W",
+        "scores": {
+          "W": 2
+        }
+      },
+      {
+        "text": "有人愿意教我，最后能接住一两盘就很完美",
+        "type": "special",
+        "scores": {},
+        "egg": "IMFW",
+        "unfamiliar": true
+      }
+    ],
+    "id": "p15",
+    "kind": "personality"
+  },
+  {
+    "dim": "SG",
+    "q": "对手盯你盯得很紧，你的反应是？",
+    "hint": "飞盘强调避免身体碰撞；感到不安全时可以停下沟通。",
+    "options": [
+      {
+        "text": "稳住，用熟悉的变向和假动作摆脱",
+        "type": "S",
+        "scores": {
+          "S": 1,
+          "W": 1
+        }
+      },
+      {
+        "text": "想试个意想不到的动作，给他一点惊喜",
+        "type": "G",
+        "scores": {
+          "G": 1,
+          "F": 1
+        }
+      },
+      {
+        "text": "一被盯就有点慌，先问队友怎么摆脱",
+        "type": "special",
+        "scores": {},
+        "egg": "IMFW",
+        "unfamiliar": true
+      }
+    ],
+    "id": "p16",
+    "kind": "personality"
+  },
+  {
+    "dim": "VA",
+    "q": "轮到你在场边等下一次上场，你一般在干什么？",
+    "hint": "场边也可以给队友提供帮助。",
+    "options": [
+      {
+        "text": "观察场上位置，喊话提醒队友",
+        "type": "V",
+        "scores": {
+          "V": 1
+        }
+      },
+      {
+        "text": "活动身体，准备好下一次上场",
+        "type": "A",
+        "scores": {
+          "A": 1
+        }
+      },
+      {
+        "text": "补水、拍照、喊好球，我的场边业务很熟",
+        "type": "special",
+        "scores": {},
+        "egg": "CHILL",
+        "unfamiliar": false
+      }
+    ],
+    "id": "p17",
+    "kind": "personality"
+  },
+  {
+    "dim": "HC",
+    "q": "如果立刻解锁一个技能，你想要哪个？",
+    "hint": "这里问的是愿望，不会拿愿望给你的实力加分。",
+    "options": [
+      {
+        "text": "能从防守者旁边的小空隙，把盘准确传出去",
+        "type": "H",
+        "scores": {
+          "H": 1,
+          "S": 1
+        }
+      },
+      {
+        "text": "能跳起来接到高盘，成为空中的接盘王",
+        "type": "C",
+        "scores": {
+          "C": 1,
+          "G": 1
+        }
+      },
+      {
+        "text": "先解锁“把盘平稳传给三米外的人”吧",
+        "type": "special",
+        "scores": {},
+        "egg": "IMFW",
+        "unfamiliar": true
+      }
+    ],
+    "id": "p18",
+    "kind": "personality"
+  },
+  {
+    "dim": "FW",
+    "q": "全队都累了，你更可能怎么做？",
+    "hint": "身体不舒服就休息；这题问你怎样给团队打气。",
+    "options": [
+      {
+        "text": "讲个笑话，让大家放松一下再继续",
+        "type": "F",
+        "scores": {
+          "F": 2
+        }
+      },
+      {
+        "text": "在体力允许时，主动多承担一次跑动",
+        "type": "W",
+        "scores": {
+          "W": 2
+        }
+      },
+      {
+        "text": "只要我跑得够慢，失误就追不上我",
+        "type": "special",
+        "scores": {},
+        "egg": "IMFW"
+      },
+      {
+        "text": "我可能是最先没电的那个，先补水休息一下",
+        "type": "special",
+        "scores": {},
+        "egg": "CHILL",
+        "unfamiliar": false
+      }
+    ],
+    "id": "p19",
+    "kind": "personality"
+  },
+  {
+    "dim": "HC",
+    "q": "你最想听到队友怎么夸你？",
+    "hint": "期待的角色不等于当前水平。",
+    "options": [
+      {
+        "text": "“你拿盘的时候，我们特别安心。”",
+        "type": "H",
+        "scores": {
+          "H": 2
+        }
+      },
+      {
+        "text": "“你总能跑到空位，太好传了！”",
+        "type": "C",
+        "scores": {
+          "C": 3
+        }
+      },
+      {
+        "text": "“你今天终于没跑错方向！”我也很欣慰",
+        "type": "special",
+        "scores": {},
+        "egg": "IMFW",
+        "unfamiliar": true
+      }
+    ],
+    "id": "p20",
+    "kind": "personality"
+  },
+  {
+    "dim": "SG",
+    "q": "你在得分区边缘等盘，对手也在靠近。你会？",
+    "hint": "得分区是场地两端的区域；持盘跑进去不算得分，接住盘后的首次落地位置很关键。",
+    "options": [
+      {
+        "text": "在不碰撞的前提下先接稳，没得分也没关系",
+        "type": "S",
+        "scores": {
+          "S": 1
+        }
+      },
+      {
+        "text": "空间安全时，争取在区内接住盘直接得分",
+        "type": "G",
+        "scores": {
+          "G": 1
+        }
+      },
+      {
+        "text": "得分区是哪块？暂停一下，让我认认路",
+        "type": "special",
+        "scores": {},
+        "egg": "IMFW",
+        "unfamiliar": true
+      }
+    ],
+    "id": "p21",
+    "kind": "personality"
+  },
+  {
+    "dim": "VA",
+    "q": "队友不小心掉盘了，你的本能反应是？",
+    "hint": "掉盘后通常轮到对方进攻，我们转为防守。",
+    "options": [
+      {
+        "text": "先喊一句：没关系，下一盘！",
+        "type": "V",
+        "scores": {
+          "V": 2
+        }
+      },
+      {
+        "text": "马上回去防守，争取把盘权拿回来",
+        "type": "A",
+        "scores": {
+          "A": 2
+        }
+      },
+      {
+        "text": "我也愣了一下：现在是不是要换边进攻",
+        "type": "special",
+        "scores": {},
+        "egg": "IMFW",
+        "unfamiliar": true
+      }
+    ],
+    "id": "p22",
+    "kind": "personality"
+  },
+  {
+    "dim": "HC",
+    "q": "进攻停住了，拿盘的队友找不到人。你会？",
+    "hint": "“接应”就是跑到队友能把盘传给你的位置。",
+    "options": [
+      {
+        "text": "靠近一点，提供一个稳妥的短传选择",
+        "type": "H",
+        "scores": {
+          "H": 2
+        }
+      },
+      {
+        "text": "先假装往一个方向跑，再变向甩开防守找空位",
+        "type": "C",
+        "scores": {
+          "C": 3
+        }
+      },
+      {
+        "text": "我原地待命：需要我去哪，直接告诉我",
+        "type": "special",
+        "scores": {},
+        "egg": "IMFW",
+        "unfamiliar": true
+      }
+    ],
+    "id": "p23",
+    "kind": "personality"
+  },
+  {
+    "dim": "SG",
+    "q": "你觉得飞盘最有魅力的瞬间是？",
+    "hint": "审美没有高低分。",
+    "options": [
+      {
+        "text": "全队来回传了十几次，最后轻松得分",
+        "type": "S",
+        "scores": {
+          "S": 1,
+          "F": 1
+        }
+      },
+      {
+        "text": "一记漂亮长传，被队友高高跃起接住",
+        "type": "G",
+        "scores": {
+          "G": 1,
+          "W": 1
+        }
+      },
+      {
+        "text": "我第一次接住盘！这个瞬间就值得庆祝",
+        "type": "special",
+        "scores": {},
+        "egg": "IMFW",
+        "unfamiliar": true
+      }
+    ],
+    "id": "p24",
+    "kind": "personality"
+  },
+  {
+    "dim": "VA",
+    "q": "大家讨论下一轮怎么打，你更愿意？",
+    "hint": "战术就是提前商量谁站哪、谁先跑、怎么配合。",
+    "options": [
+      {
+        "text": "提出思路，和大家商量每个人怎么做",
+        "type": "V",
+        "scores": {
+          "V": 1,
+          "W": 1,
+          "H": 1
+        }
+      },
+      {
+        "text": "听清分工，把自己的任务做好",
+        "type": "A",
+        "scores": {
+          "A": 1,
+          "S": 1,
+          "C": 1
+        }
+      },
+      {
+        "text": "听得很认真，但需要一个“你就站这里”的版本",
+        "type": "special",
+        "scores": {},
+        "egg": "IMFW",
+        "unfamiliar": true
+      }
+    ],
+    "id": "p25",
+    "kind": "personality"
+  },
+  {
+    "dim": "FW",
+    "q": "输了一场很精彩的比赛，你通常什么心情？",
+    "hint": "选你第一时间的真实感受。",
+    "options": [
+      {
+        "text": "还是很满足，刚才那些配合太开心了",
+        "type": "F",
+        "scores": {
+          "F": 1
+        }
+      },
+      {
+        "text": "不太甘心，想弄清哪里还能进步",
+        "type": "W",
+        "scores": {
+          "W": 1
+        }
+      },
+      {
+        "text": "先问一句：我们刚刚为什么输了",
+        "type": "special",
+        "scores": {},
+        "egg": "IMFW",
+        "unfamiliar": true
+      }
+    ],
+    "id": "p26",
+    "kind": "personality"
+  },
+  {
+    "dim": "HC",
+    "q": "你更喜欢怎样参与一次进攻？",
+    "hint": "盘权，就是哪一方现在有机会拿盘进攻。",
+    "options": [
+      {
+        "text": "拿盘调度，负责把盘分给合适的人",
+        "type": "H",
+        "scores": {
+          "H": 2
+        }
+      },
+      {
+        "text": "多跑出空位，让拿盘的队友有得选",
+        "type": "C",
+        "scores": {
+          "C": 2
+        }
+      },
+      {
+        "text": "盘权？我还处于“别砸到我 / 快传给我”的反复横跳",
+        "type": "special",
+        "scores": {},
+        "egg": "IMFW",
+        "unfamiliar": true
+      }
+    ],
+    "id": "p27",
+    "kind": "personality"
+  },
+  {
+    "dim": "VA",
+    "q": "队友疯狂喊你的名字要盘，你会？",
+    "hint": "有人喊你，不代表必须马上把盘给他。",
+    "options": [
+      {
+        "text": "看看他的位置，用喊话或手势沟通怎么配合",
+        "type": "V",
+        "scores": {
+          "V": 1,
+          "H": 1
+        }
+      },
+      {
+        "text": "先稳住自己的判断，找到合适的人再传",
+        "type": "A",
+        "scores": {
+          "A": 1,
+          "S": 1
+        }
+      },
+      {
+        "text": "脑子一空：你别催，我还在研究怎么传",
+        "type": "special",
+        "scores": {},
+        "egg": "IMFW",
+        "unfamiliar": true
+      }
+    ],
+    "id": "p28",
+    "kind": "personality"
+  },
+  {
+    "dim": "FW",
+    "q": "你在场上最想听到的声音是？",
+    "hint": "每个人的“上场背景音乐”不太一样。",
+    "options": [
+      {
+        "text": "队友的鼓励和欢呼",
+        "type": "F",
+        "scores": {
+          "F": 1
+        }
+      },
+      {
+        "text": "教练或队友给出有用的提醒",
+        "type": "W",
+        "scores": {
+          "W": 1
+        }
+      },
+      {
+        "text": "“这你都敢长传？！”",
+        "type": "special",
+        "scores": {},
+        "egg": "HUCK"
+      },
+      {
+        "text": "“没关系，你是第一次玩，慢慢来。”",
+        "type": "special",
+        "scores": {},
+        "egg": "IMFW",
+        "unfamiliar": true
+      }
+    ],
+    "id": "p29",
+    "kind": "personality"
+  },
+  {
+    "dim": "HC",
+    "q": "刚把盘传给队友，你接下来更常做什么？",
+    "hint": "不用懂“竖排”“回接”等术语，想想传完盘的你。",
+    "options": [
+      {
+        "text": "留在附近，方便队友需要时传回来",
+        "type": "H",
+        "scores": {
+          "H": 2,
+          "S": 1
+        }
+      },
+      {
+        "text": "往前跑找空位，准备再接下一盘",
+        "type": "C",
+        "scores": {
+          "C": 3,
+          "G": 1
+        }
+      },
+      {
+        "text": "原地发呆：我传完了，是不是可以下班了",
+        "type": "special",
+        "scores": {},
+        "egg": "IMFW",
+        "unfamiliar": true
+      }
+    ],
+    "id": "p30",
+    "kind": "personality"
+  },
+  {
+    "id": "s-throw",
+    "kind": "ability",
+    "axis": "throw",
+    "label": "传盘基本功",
+    "weight": 1.3,
+    "q": "先不谈想象：你平时把盘传出去，实际最接近哪种情况？",
+    "hint": "按最近的真实表现选。没试过就选第一项；想做到的，留给下一次升级。",
+    "options": [
+      {
+        "text": "还没试过，或经常不知道盘会飞去哪",
+        "level": 0,
+        "scores": {}
+      },
+      {
+        "text": "能近距离传到人附近，反手比较熟，正手还在练",
+        "level": 2,
+        "scores": {}
+      },
+      {
+        "text": "正反手短中距离基本能到位，没有防守时较稳",
+        "level": 4,
+        "scores": {}
+      },
+      {
+        "text": "有人防守时也能稳定短传，能按路线送盘",
+        "level": 6,
+        "scores": {}
+      },
+      {
+        "text": "强对抗或有风时，多种距离和角度仍然比较稳定",
+        "level": 8,
+        "scores": {}
+      },
+      {
+        "text": "在国家队或同等顶级赛事强度下，传盘表现经过持续验证",
+        "level": 9,
+        "scores": {}
+      }
+    ]
+  },
+  {
+    "id": "s-catch",
+    "kind": "ability",
+    "axis": "catch",
+    "label": "接盘稳定度",
+    "weight": 1.2,
+    "q": "普通接盘、跑动接盘，你的日常成功率大概怎样？",
+    "hint": "按最近的真实表现选。没试过就选第一项；想做到的，留给下一次升级。",
+    "options": [
+      {
+        "text": "还没练过，或者盘一来就闭眼祈祷",
+        "level": 0,
+        "scores": {}
+      },
+      {
+        "text": "站着能接住慢盘，跑起来就开始抽盲盒",
+        "level": 2,
+        "scores": {}
+      },
+      {
+        "text": "跑动中大多能接住正常来盘，偶尔脱手",
+        "level": 4,
+        "scores": {}
+      },
+      {
+        "text": "有人跟防时，多种高度的来盘也能稳定处理",
+        "level": 6,
+        "scores": {}
+      },
+      {
+        "text": "高强度比赛中，困难来盘和边线盘处理稳定",
+        "level": 8,
+        "scores": {}
+      },
+      {
+        "text": "国家队或同等顶级赛事中，高压接盘表现持续稳定",
+        "level": 9,
+        "scores": {}
+      }
+    ]
+  },
+  {
+    "id": "s-movement",
+    "kind": "ability",
+    "axis": "movement",
+    "label": "跑位与空间",
+    "weight": 1,
+    "q": "你在场上找空位的实际表现是？",
+    "hint": "按最近的真实表现选。没试过就选第一项；想做到的，留给下一次升级。",
+    "options": [
+      {
+        "text": "经常不知道往哪跑，或者和队友挤成一团",
+        "level": 0,
+        "scores": {}
+      },
+      {
+        "text": "有人明确指路时能跑到位置",
+        "level": 2,
+        "scores": {}
+      },
+      {
+        "text": "知道什么时候接应、什么时候跑开给别人让路",
+        "level": 4,
+        "scores": {}
+      },
+      {
+        "text": "能看队友和防守的位置，连续调整跑位时机",
+        "level": 6,
+        "scores": {}
+      },
+      {
+        "text": "能在强对抗下通过跑位牵动防线、为全队创造机会",
+        "level": 8,
+        "scores": {}
+      },
+      {
+        "text": "国家队或同等顶级比赛强度下，跑位决策长期有效",
+        "level": 9,
+        "scores": {}
+      }
+    ]
+  },
+  {
+    "id": "s-defence",
+    "kind": "ability",
+    "axis": "defence",
+    "label": "防守与阅读",
+    "weight": 1,
+    "q": "轮到防守，你通常能做到哪一步？",
+    "hint": "按最近的真实表现选。没试过就选第一项；想做到的，留给下一次升级。",
+    "options": [
+      {
+        "text": "还没搞懂要防谁、怎么防",
+        "level": 0,
+        "scores": {}
+      },
+      {
+        "text": "能跟着自己的对手跑，有时跟丢",
+        "level": 2,
+        "scores": {}
+      },
+      {
+        "text": "知道基本站位，能观察盘和对手，减少漏人",
+        "level": 4,
+        "scores": {}
+      },
+      {
+        "text": "会按队伍分工限制方向、及时补位和沟通",
+        "level": 6,
+        "scores": {}
+      },
+      {
+        "text": "强对抗中能读出进攻意图，稳定执行多种防守配合",
+        "level": 8,
+        "scores": {}
+      },
+      {
+        "text": "在国家队或同等顶级比赛中，防守判断与执行经过验证",
+        "level": 9,
+        "scores": {}
+      }
+    ]
+  },
+  {
+    "id": "s-rules",
+    "kind": "ability",
+    "axis": "rules",
+    "label": "规则与配合",
+    "weight": 0.8,
+    "q": "比赛规则和队伍配合，你掌握到哪一步？",
+    "hint": "按最近的真实表现选。没试过就选第一项；想做到的，留给下一次升级。",
+    "options": [
+      {
+        "text": "还在学习怎么得分、掉盘以后怎么办",
+        "level": 0,
+        "scores": {}
+      },
+      {
+        "text": "知道不能持盘跑，能跟着讲解打简单回合",
+        "level": 2,
+        "scores": {}
+      },
+      {
+        "text": "熟悉常见规则和基本分工，遇到争议会沟通",
+        "level": 4,
+        "scores": {}
+      },
+      {
+        "text": "能独立处理常见规则情境，熟练参与不同配合",
+        "level": 6,
+        "scores": {}
+      },
+      {
+        "text": "能在高强度比赛中调整配合，清晰沟通复杂情境",
+        "level": 8,
+        "scores": {}
+      },
+      {
+        "text": "在国家队或同等顶级赛事中，有持续的战术执行与沟通经验",
+        "level": 9,
+        "scores": {}
+      }
+    ]
+  },
+  {
+    "id": "s-experience",
+    "kind": "ability",
+    "axis": "experience",
+    "label": "实战经历",
+    "weight": 1.3,
+    "q": "你已经实际参加过哪种强度的飞盘活动？",
+    "hint": "按最近的真实表现选。没试过就选第一项；想做到的，留给下一次升级。",
+    "options": [
+      {
+        "text": "还没下过场，或刚刚第一次体验",
+        "level": 0,
+        "scores": {}
+      },
+      {
+        "text": "偶尔朋友局 / 新手局，主要图开心",
+        "level": 2,
+        "scores": {}
+      },
+      {
+        "text": "固定训练或约局，参加过入门赛事",
+        "level": 4,
+        "scores": {}
+      },
+      {
+        "text": "长期训练，有多次城市或区域比赛经历",
+        "level": 6,
+        "scores": {}
+      },
+      {
+        "text": "长期参加全国高水平俱乐部赛事，有稳定上场表现",
+        "level": 8,
+        "scores": {}
+      },
+      {
+        "text": "已在国家队或同等顶级赛事中，有持续的正式上场经历",
+        "level": 9,
+        "scores": {}
+      }
+    ]
+  },
+  {
+    "id": "s-intensity",
+    "kind": "ability",
+    "axis": "intensity",
+    "label": "比赛续航",
+    "weight": 1,
+    "q": "在自己平时参加的活动里，你的跑动续航怎样？",
+    "hint": "按最近的真实表现选。没试过就选第一项；想做到的，留给下一次升级。",
+    "options": [
+      {
+        "text": "还没体验，暂时不知道",
+        "level": 0,
+        "scores": {}
+      },
+      {
+        "text": "短时间参与没问题，多跑几个回合需要长休息",
+        "level": 2,
+        "scores": {}
+      },
+      {
+        "text": "能完成普通约局，知道分配体力和轮换",
+        "level": 4,
+        "scores": {}
+      },
+      {
+        "text": "能应对连续比赛回合，休息后动作质量基本稳定",
+        "level": 6,
+        "scores": {}
+      },
+      {
+        "text": "高强度赛事、多场比赛中，仍能维持有效跑动和判断",
+        "level": 8,
+        "scores": {}
+      },
+      {
+        "text": "已在国家队或同等顶级赛事强度下，持续完成比赛任务",
+        "level": 9,
+        "scores": {}
+      }
+    ]
+  },
+  {
+    "id": "s-consistency",
+    "kind": "ability",
+    "axis": "consistency",
+    "label": "压力下的稳定",
+    "weight": 1.4,
+    "q": "把“人生最佳一盘”先收起来，你平常的稳定性如何？",
+    "hint": "按最近的真实表现选。没试过就选第一项；想做到的，留给下一次升级。",
+    "options": [
+      {
+        "text": "基本动作还没成形，主要靠缘分",
+        "level": 0,
+        "scores": {}
+      },
+      {
+        "text": "无压力时偶尔打得不错，一紧张就容易乱",
+        "level": 2,
+        "scores": {}
+      },
+      {
+        "text": "普通约局大多能做好自己的任务，失误后能调整",
+        "level": 4,
+        "scores": {}
+      },
+      {
+        "text": "正式比赛有人盯防时，也能稳定完成自己的分工",
+        "level": 6,
+        "scores": {}
+      },
+      {
+        "text": "全国高水平赛事中，关键回合的发挥经过反复检验",
+        "level": 8,
+        "scores": {}
+      },
+      {
+        "text": "国家队或同等顶级赛事中，多次关键回合都能稳定完成任务",
+        "level": 9,
+        "scores": {}
+      }
+    ]
+  }
+]
