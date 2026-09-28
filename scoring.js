@@ -1,4 +1,4 @@
-export const VERSION = 'fbti-v2.0';
+export const VERSION = 'fbti-v3.0';
 export const DIMENSIONS = [
   { pair: 'HC', title: '上场角色', left: '组织传盘', right: '跑位接盘' },
   { pair: 'SG', title: '机会选择', left: '稳稳来', right: '敢尝试' },
@@ -18,72 +18,103 @@ export const LEVELS = [
   ['国家队级', '问卷里的天花板；真正的含金量，要去赛场兑现。', '以顶级赛事中的持续表现为准，问卷可不能替你发国家队队服。'],
 ];
 
-export function validateQuestions(questions) {
-  if (!Array.isArray(questions) || !questions.length) throw new Error('题库为空');
-  const ids = new Set();
+export function validateQuestions(questions, mapping) {
+  if (!Array.isArray(questions) || !questions.length || !mapping?.rules || !mapping?.axes) throw new Error('题库或映射为空');
+  const ids = new Set(), optionIds = new Set();
+  for (const [axis, config] of Object.entries(mapping.axes)) {
+    if (!axis || !config.label || !Number.isFinite(config.weight) || config.weight <= 0) throw new Error('线索轴配置无效');
+  }
+  if (Object.keys(mapping.axes).length !== 5) throw new Error('需要五类场景线索');
   for (const q of questions) {
     if (!q.id || ids.has(q.id) || !q.q || !Array.isArray(q.options) || q.options.length < 2) throw new Error('题目格式不完整');
     ids.add(q.id);
-    if (!['personality', 'ability'].includes(q.kind)) throw new Error('未知题目类型');
-    if (q.kind === 'ability' && !(Number.isFinite(q.weight) && q.weight > 0 && q.axis)) throw new Error('实力权重无效');
     for (const o of q.options) {
-      if (!o.text) throw new Error('选项缺少内容');
-      if (q.kind === 'ability' && !(Number.isFinite(o.level) && o.level >= 0 && o.level <= 9)) throw new Error('实力分数越界');
-      for (const [key, value] of Object.entries(o.scores || {})) {
+      if (!o.id || optionIds.has(o.id) || !o.text) throw new Error('选项标识或文案无效');
+      optionIds.add(o.id);
+      const rule = mapping.rules[o.id];
+      if (!rule || !rule.scores || !rule.ability || !rule.reason) throw new Error(`选项缺少结果映射：${o.id}`);
+      if (rule.egg && !['IMFW', 'HUCK'].includes(rule.egg)) throw new Error('未知彩蛋');
+      for (const [key, value] of Object.entries(rule.scores)) {
         if (!'HCSGVAFW'.includes(key) || key.length !== 1 || !Number.isFinite(value) || value < 0) throw new Error('人格权重无效');
+      }
+      for (const [key, value] of Object.entries(rule.ability)) {
+        if (!(key in mapping.axes) || !Number.isFinite(value) || value < 0 || value > 7) throw new Error('场景线索分数无效');
       }
     }
   }
-  if (!questions.some(q => q.axis === 'experience')) throw new Error('缺少实战经历题');
+  if (Object.keys(mapping.rules).some(id => !optionIds.has(id))) throw new Error('存在未使用的选项映射');
   return true;
 }
 
 export function validAnswers(questions, answers, complete = false) {
-  return Array.isArray(answers) && answers.length === questions.length && answers.every((a, i) =>
+  return Array.isArray(answers) && answers.length === questions.length && Array.from(answers).every((a, i) =>
     (!complete && a === null) || (Number.isInteger(a) && a >= 0 && a < questions[i].options.length));
 }
 
-export function assess(questions, answers) {
+// Store identities, not array offsets: moving an option in the editor must not
+// silently turn an old answer into a different choice.
+export function packAnswers(questions, answers) {
+  return Object.fromEntries(questions.map((q, i) => [q.id, answers[i] === null ? null : q.options[answers[i]]?.id ?? null]));
+}
+export function unpackAnswers(questions, saved) {
+  if (!saved || typeof saved !== 'object' || Array.isArray(saved)) return questions.map(() => null);
+  return questions.map(q => {
+    const i = q.options.findIndex(o => o.id === saved[q.id]);
+    return i < 0 ? null : i;
+  });
+}
+
+export function assess(questions, answers, mapping) {
   if (!validAnswers(questions, answers, true)) throw new Error('请先完成所有题目');
   const scores = Object.fromEntries('HCSGVAFW'.split('').map(k => [k, 0]));
-  const eggs = { IMFW: 0, HUCK: 0, CHILL: 0 };
-  const evidence = [];
-  let unfamiliar = 0;
-  let personalityCount = 0;
+  const eggs = { IMFW: 0, HUCK: 0 };
+  const clues = [], developingIds = new Set();
+  const buckets = Object.fromEntries(Object.keys(mapping.axes).map(k => [k, []]));
   questions.forEach((q, i) => {
-    const o = q.options[answers[i]];
-    if (q.kind === 'personality') {
-      personalityCount++;
-      for (const [k, v] of Object.entries(o.scores || {})) scores[k] += v;
-      if (o.egg in eggs) eggs[o.egg]++;
-      if (o.unfamiliar) unfamiliar++;
-    } else evidence.push({ axis: q.axis, label: q.label, level: o.level, weight: q.weight, text: o.text });
+    const o = q.options[answers[i]], rule = mapping.rules[o.id];
+    if (!rule) throw new Error(`缺少选项映射：${o.id}`);
+    for (const [k, v] of Object.entries(rule.scores)) scores[k] += v;
+    if (rule.egg in eggs) eggs[rule.egg]++;
+    if (rule.developing && Object.keys(rule.ability).length) developingIds.add(q.id);
+    const signals = Object.entries(rule.ability);
+    if (signals.length) clues.push({ question: i + 1, id: o.id, text: o.text, reason: rule.reason, developing: !!rule.developing });
+    for (const [axis, value] of signals) buckets[axis].push(value);
   });
   const dimensions = DIMENSIONS.map(d => {
-    const [a, b] = d.pair;
-    const total = scores[a] + scores[b];
+    const [a, b] = d.pair, total = scores[a] + scores[b];
     return { ...d, pct: total ? Math.round(scores[a] / total * 100) : 50, unknown: total === 0, tied: scores[a] === scores[b], code: scores[a] >= scores[b] ? a : b };
   });
   const baseCode = dimensions.map(d => d.code).join('');
-  let code = baseCode;
-  if (eggs.IMFW >= 6 && eggs.IMFW / personalityCount >= .2) code = 'IMFW';
-  else if (eggs.HUCK >= 2) code = 'HUCK';
-  else if (eggs.CHILL >= 3) code = 'CHILL';
-
-  const average = evidence.reduce((sum, e) => sum + e.level * e.weight, 0) / evidence.reduce((sum, e) => sum + e.weight, 0);
-  const familiarityPenalty = Math.min(1.5, unfamiliar / personalityCount * 3);
-  const experience = evidence.find(e => e.axis === 'experience').level;
-  const ceiling = experience < 9 ? Math.min(8, experience + 1) : 9;
-  const level = Math.max(0, Math.min(ceiling, Math.round(average - familiarityPenalty)));
-  const spread = Math.max(...evidence.map(e => e.level)) - Math.min(...evidence.map(e => e.level));
-  const inconsistent = spread >= 6 || (unfamiliar / personalityCount >= .35 && average >= 5);
+  const code = eggs.IMFW >= 4 ? 'IMFW' : eggs.HUCK >= 2 ? 'HUCK' : baseCode;
+  const evidence = Object.entries(mapping.axes).map(([axis, config]) => {
+    const values = buckets[axis];
+    const mean = values.length ? values.reduce((s, v) => s + v, 0) / values.length : null;
+    return { axis, label: config.label, weight: config.weight, mean, level: mean === null ? null : Math.round(mean * 10) / 10, count: values.length };
+  });
+  const available = evidence.filter(e => e.mean !== null);
+  const totalWeight = available.reduce((s, e) => s + e.weight, 0);
+  const average = totalWeight ? available.reduce((s, e) => s + e.mean * e.weight, 0) / totalWeight : null;
+  // Scene answers describe decisions, not throwing accuracy or actual fitness.
+  // Multiple independent areas are needed before awarding an advanced estimate.
+  const coherent = available.length === 5 && available.every(e => e.mean >= 5 && e.count >= 2);
+  const inferred = average === null ? 3 : Math.round(average * 1.15 + (coherent ? .5 : 0));
+  const developing = developingIds.size;
+  // Repeated explicit dependence on instructions outweighs forced A/B choices in
+  // other original scenes. One unfamiliar term or one joke has no such cap.
+  const developingCeiling = developing >= 7 ? 1 : developing >= 5 ? 2 : developing >= 3 ? 3 : 7;
+  const insufficient = clues.length < 8 || available.length < 4;
+  const ceiling = Math.min(7, developingCeiling, insufficient ? 4 : 7);
+  const level = Math.max(0, Math.min(ceiling, inferred));
+  const spread = available.length ? Math.max(...available.map(e => e.mean)) - Math.min(...available.map(e => e.mean)) : 0;
+  const mixed = developing >= 3 && clues.filter(c => !c.developing).length >= 5;
+  const inconsistent = spread >= 3 || mixed;
+  const ordered = [...available].sort((a, b) => b.mean - a.mean);
   return {
-    code, baseCode, dimensions, eggs, unfamiliar, evidence, level,
+    code, baseCode, dimensions, eggs, evidence, clues, developing, level,
     low: Math.max(0, level - 2), high: Math.min(9, level + 2),
     levelName: LEVELS[level][0], quip: LEVELS[level][1], nextStep: LEVELS[level][2],
-    consistency: inconsistent ? '线索有反差，建议上场验证' : '线索较一致，仍需上场验证',
-    inconsistent, experienceCapped: Math.round(average - familiarityPenalty) > ceiling,
-    strongest: [...evidence].sort((a, b) => b.level - a.level)[0],
-    practice: [...evidence].filter(e => e.axis !== 'experience').sort((a, b) => a.level - b.level)[0],
+    consistency: insufficient ? '线索较少，暂给宽泛参考' : inconsistent ? '线索有反差，场上再见分晓' : '多处选择相互印证，仍需场上验证',
+    inconsistent, insufficient, developingCapped: developingCeiling < inferred,
+    strongest: ordered[0] ?? null, practice: ordered.at(-1) ?? null,
   };
 }

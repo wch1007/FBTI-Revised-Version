@@ -1,0 +1,693 @@
+{
+  "version": "scene-v3.0",
+  "axes": {
+    "control": {
+      "label": "盘权处理",
+      "weight": 1.1
+    },
+    "space": {
+      "label": "空间与接应",
+      "weight": 1.1
+    },
+    "reading": {
+      "label": "局势阅读",
+      "weight": 1.0
+    },
+    "pressure": {
+      "label": "压力决策",
+      "weight": 1.2
+    },
+    "teamwork": {
+      "label": "配合执行",
+      "weight": 0.8
+    }
+  },
+  "rules": {
+    "p01-a": {
+      "scores": {
+        "H": 1,
+        "S": 1
+      },
+      "ability": {
+        "control": 5,
+        "space": 5
+      },
+      "reason": "开场就主动接应或拉开空间，提供基本进攻意识线索。"
+    },
+    "p01-b": {
+      "scores": {
+        "C": 1,
+        "G": 1
+      },
+      "ability": {
+        "space": 5
+      },
+      "reason": "开场就主动接应或拉开空间，提供基本进攻意识线索。"
+    },
+    "p01-extra1": {
+      "scores": {},
+      "ability": {
+        "space": 2,
+        "teamwork": 2
+      },
+      "reason": "在这一具体场景中仍依赖指令或基本动作，提供初阶线索。",
+      "developing": true
+    },
+    "p02-a": {
+      "scores": {
+        "S": 2
+      },
+      "ability": {},
+      "reason": "偏好、情绪、愿望或假设，不据此推断技术水平。"
+    },
+    "p02-b": {
+      "scores": {
+        "G": 2
+      },
+      "ability": {},
+      "reason": "偏好、情绪、愿望或假设，不据此推断技术水平。"
+    },
+    "p03-a": {
+      "scores": {
+        "V": 2
+      },
+      "ability": {
+        "teamwork": 6,
+        "reading": 5
+      },
+      "reason": "在混乱回合里提出站位或用有效动作带动队友，提供协同线索。"
+    },
+    "p03-b": {
+      "scores": {
+        "A": 2
+      },
+      "ability": {
+        "space": 6,
+        "control": 5
+      },
+      "reason": "在混乱回合里提出站位或用有效动作带动队友，提供协同线索。"
+    },
+    "p03-extra1": {
+      "scores": {},
+      "ability": {
+        "reading": 1,
+        "teamwork": 1
+      },
+      "reason": "在这一具体场景中仍依赖指令或基本动作，提供初阶线索。",
+      "developing": true,
+      "egg": "IMFW"
+    },
+    "p03-extra2": {
+      "scores": {},
+      "ability": {
+        "space": 1,
+        "reading": 1
+      },
+      "reason": "在这一具体场景中仍依赖指令或基本动作，提供初阶线索。",
+      "developing": true,
+      "egg": "IMFW"
+    },
+    "p04-a": {
+      "scores": {
+        "F": 2
+      },
+      "ability": {},
+      "reason": "偏好、情绪、愿望或假设，不据此推断技术水平。"
+    },
+    "p04-b": {
+      "scores": {
+        "W": 2
+      },
+      "ability": {},
+      "reason": "偏好、情绪、愿望或假设，不据此推断技术水平。"
+    },
+    "p05-a": {
+      "scores": {
+        "H": 2
+      },
+      "ability": {},
+      "reason": "偏好、情绪、愿望或假设，不据此推断技术水平。"
+    },
+    "p05-b": {
+      "scores": {
+        "C": 2
+      },
+      "ability": {},
+      "reason": "偏好、情绪、愿望或假设，不据此推断技术水平。"
+    },
+    "p06-a": {
+      "scores": {
+        "S": 1,
+        "W": 1
+      },
+      "ability": {},
+      "reason": "偏好、情绪、愿望或假设，不据此推断技术水平。"
+    },
+    "p06-b": {
+      "scores": {
+        "G": 1,
+        "F": 1
+      },
+      "ability": {},
+      "reason": "偏好、情绪、愿望或假设，不据此推断技术水平。"
+    },
+    "p06-extra1": {
+      "scores": {},
+      "ability": {},
+      "reason": "没有练过飞扑不代表水平低，不计入能力推断。"
+    },
+    "p07-a": {
+      "scores": {
+        "V": 1,
+        "S": 1
+      },
+      "ability": {
+        "space": 6,
+        "teamwork": 5
+      },
+      "reason": "注意到切线冲突并主动处理空间，提供配合执行线索。"
+    },
+    "p07-b": {
+      "scores": {
+        "A": 1,
+        "C": 1
+      },
+      "ability": {
+        "space": 6,
+        "teamwork": 5
+      },
+      "reason": "注意到切线冲突并主动处理空间，提供配合执行线索。"
+    },
+    "p07-extra1": {
+      "scores": {},
+      "ability": {
+        "space": 1,
+        "teamwork": 2
+      },
+      "reason": "在这一具体场景中仍依赖指令或基本动作，提供初阶线索。",
+      "developing": true,
+      "egg": "IMFW"
+    },
+    "p08-a": {
+      "scores": {
+        "F": 2
+      },
+      "ability": {},
+      "reason": "偏好、情绪、愿望或假设，不据此推断技术水平。"
+    },
+    "p08-b": {
+      "scores": {
+        "W": 2
+      },
+      "ability": {},
+      "reason": "偏好、情绪、愿望或假设，不据此推断技术水平。"
+    },
+    "p08-c": {
+      "scores": {},
+      "ability": {},
+      "reason": "偏好、情绪、愿望或假设，不据此推断技术水平。",
+      "egg": "IMFW"
+    },
+    "p09-a": {
+      "scores": {
+        "S": 1,
+        "H": 1
+      },
+      "ability": {
+        "pressure": 6,
+        "control": 5
+      },
+      "reason": "高 stall 下的盘权处理，提供压力决策线索；盲目长传不当作技术。"
+    },
+    "p09-b": {
+      "scores": {
+        "G": 2
+      },
+      "ability": {
+        "pressure": 3,
+        "reading": 3
+      },
+      "reason": "高 stall 下的盘权处理，提供压力决策线索；盲目长传不当作技术。"
+    },
+    "p09-c": {
+      "scores": {},
+      "ability": {
+        "pressure": 1
+      },
+      "reason": "高 stall 下的盘权处理，提供压力决策线索；盲目长传不当作技术。",
+      "egg": "HUCK"
+    },
+    "p09-extra1": {
+      "scores": {},
+      "ability": {
+        "pressure": 0,
+        "control": 1
+      },
+      "reason": "在这一具体场景中仍依赖指令或基本动作，提供初阶线索。",
+      "developing": true,
+      "egg": "IMFW"
+    },
+    "p10-a": {
+      "scores": {
+        "V": 2
+      },
+      "ability": {},
+      "reason": "偏好、情绪、愿望或假设，不据此推断技术水平。"
+    },
+    "p10-b": {
+      "scores": {
+        "A": 2
+      },
+      "ability": {},
+      "reason": "偏好、情绪、愿望或假设，不据此推断技术水平。"
+    },
+    "p11-a": {
+      "scores": {
+        "F": 2,
+        "G": 1
+      },
+      "ability": {},
+      "reason": "偏好、情绪、愿望或假设，不据此推断技术水平。"
+    },
+    "p11-b": {
+      "scores": {
+        "W": 2,
+        "S": 1
+      },
+      "ability": {},
+      "reason": "偏好、情绪、愿望或假设，不据此推断技术水平。"
+    },
+    "p12-a": {
+      "scores": {
+        "S": 2,
+        "H": 1
+      },
+      "ability": {
+        "control": 5,
+        "reading": 5
+      },
+      "reason": "接盘后的第一观察目标，提供出盘准备线索。"
+    },
+    "p12-b": {
+      "scores": {
+        "G": 2
+      },
+      "ability": {
+        "reading": 5,
+        "space": 5
+      },
+      "reason": "接盘后的第一观察目标，提供出盘准备线索。"
+    },
+    "p12-c": {
+      "scores": {
+        "S": 2,
+        "C": 2
+      },
+      "ability": {
+        "control": 3
+      },
+      "reason": "接盘后的第一观察目标，提供出盘准备线索。"
+    },
+    "p12-extra1": {
+      "scores": {},
+      "ability": {
+        "control": 2,
+        "reading": 2
+      },
+      "reason": "在这一具体场景中仍依赖指令或基本动作，提供初阶线索。",
+      "developing": true
+    },
+    "p13-a": {
+      "scores": {
+        "S": 2
+      },
+      "ability": {
+        "reading": 6,
+        "control": 5
+      },
+      "reason": "能提出针对联防的推进思路，提供防守阅读线索。"
+    },
+    "p13-b": {
+      "scores": {
+        "G": 2
+      },
+      "ability": {
+        "reading": 6,
+        "control": 5
+      },
+      "reason": "能提出针对联防的推进思路，提供防守阅读线索。"
+    },
+    "p13-extra1": {
+      "scores": {},
+      "ability": {
+        "reading": 1,
+        "teamwork": 2
+      },
+      "reason": "在这一具体场景中仍依赖指令或基本动作，提供初阶线索。",
+      "developing": true,
+      "egg": "IMFW"
+    },
+    "p14-a": {
+      "scores": {
+        "V": 1,
+        "W": 1
+      },
+      "ability": {
+        "reading": 5
+      },
+      "reason": "场边观察到战术或补位信息，补充局势阅读线索；只加油不扣分。"
+    },
+    "p14-b": {
+      "scores": {
+        "A": 1,
+        "F": 1
+      },
+      "ability": {},
+      "reason": "场边观察到战术或补位信息，补充局势阅读线索；只加油不扣分。"
+    },
+    "p14-c": {
+      "scores": {
+        "V": 1,
+        "W": 1
+      },
+      "ability": {
+        "reading": 6,
+        "teamwork": 5
+      },
+      "reason": "场边观察到战术或补位信息，补充局势阅读线索；只加油不扣分。"
+    },
+    "p15-a": {
+      "scores": {
+        "F": 2
+      },
+      "ability": {},
+      "reason": "偏好、情绪、愿望或假设，不据此推断技术水平。"
+    },
+    "p15-b": {
+      "scores": {
+        "W": 2
+      },
+      "ability": {},
+      "reason": "偏好、情绪、愿望或假设，不据此推断技术水平。"
+    },
+    "p16-a": {
+      "scores": {
+        "S": 1,
+        "W": 1
+      },
+      "ability": {},
+      "reason": "偏好、情绪、愿望或假设，不据此推断技术水平。"
+    },
+    "p16-b": {
+      "scores": {
+        "G": 1,
+        "F": 1
+      },
+      "ability": {},
+      "reason": "偏好、情绪、愿望或假设，不据此推断技术水平。"
+    },
+    "p17-a": {
+      "scores": {
+        "V": 1
+      },
+      "ability": {
+        "reading": 5,
+        "teamwork": 5
+      },
+      "reason": "场边提供防守信息，补充协同线索；准备上场不扣分。"
+    },
+    "p17-b": {
+      "scores": {
+        "A": 1
+      },
+      "ability": {},
+      "reason": "场边提供防守信息，补充协同线索；准备上场不扣分。"
+    },
+    "p18-a": {
+      "scores": {
+        "H": 1,
+        "S": 1
+      },
+      "ability": {},
+      "reason": "偏好、情绪、愿望或假设，不据此推断技术水平。"
+    },
+    "p18-b": {
+      "scores": {
+        "C": 1,
+        "G": 1
+      },
+      "ability": {},
+      "reason": "偏好、情绪、愿望或假设，不据此推断技术水平。"
+    },
+    "p19-a": {
+      "scores": {
+        "F": 2
+      },
+      "ability": {},
+      "reason": "偏好、情绪、愿望或假设，不据此推断技术水平。"
+    },
+    "p19-b": {
+      "scores": {
+        "W": 2
+      },
+      "ability": {},
+      "reason": "偏好、情绪、愿望或假设，不据此推断技术水平。"
+    },
+    "p19-c": {
+      "scores": {},
+      "ability": {},
+      "reason": "偏好、情绪、愿望或假设，不据此推断技术水平。",
+      "egg": "IMFW"
+    },
+    "p20-a": {
+      "scores": {
+        "H": 2
+      },
+      "ability": {},
+      "reason": "偏好、情绪、愿望或假设，不据此推断技术水平。"
+    },
+    "p20-b": {
+      "scores": {
+        "C": 3
+      },
+      "ability": {},
+      "reason": "偏好、情绪、愿望或假设，不据此推断技术水平。"
+    },
+    "p21-a": {
+      "scores": {
+        "S": 1
+      },
+      "ability": {
+        "pressure": 5
+      },
+      "reason": "得分区附近的取舍，提供有限的压力处理线索，不推断接盘成功率。"
+    },
+    "p21-b": {
+      "scores": {
+        "G": 1
+      },
+      "ability": {
+        "pressure": 5
+      },
+      "reason": "得分区附近的取舍，提供有限的压力处理线索，不推断接盘成功率。"
+    },
+    "p22-a": {
+      "scores": {
+        "V": 2
+      },
+      "ability": {},
+      "reason": "偏好、情绪、愿望或假设，不据此推断技术水平。"
+    },
+    "p22-b": {
+      "scores": {
+        "A": 2
+      },
+      "ability": {},
+      "reason": "偏好、情绪、愿望或假设，不据此推断技术水平。"
+    },
+    "p23-a": {
+      "scores": {
+        "H": 2
+      },
+      "ability": {
+        "control": 6,
+        "space": 6
+      },
+      "reason": "僵局中主动 reset 或制造切入窗口，提供解局线索。"
+    },
+    "p23-b": {
+      "scores": {
+        "C": 3
+      },
+      "ability": {
+        "space": 6,
+        "reading": 5
+      },
+      "reason": "僵局中主动 reset 或制造切入窗口，提供解局线索。"
+    },
+    "p23-extra1": {
+      "scores": {},
+      "ability": {
+        "space": 1,
+        "control": 2
+      },
+      "reason": "在这一具体场景中仍依赖指令或基本动作，提供初阶线索。",
+      "developing": true,
+      "egg": "IMFW"
+    },
+    "p24-a": {
+      "scores": {
+        "S": 1,
+        "F": 1
+      },
+      "ability": {},
+      "reason": "偏好、情绪、愿望或假设，不据此推断技术水平。"
+    },
+    "p24-b": {
+      "scores": {
+        "G": 1,
+        "W": 1
+      },
+      "ability": {},
+      "reason": "偏好、情绪、愿望或假设，不据此推断技术水平。"
+    },
+    "p25-a": {
+      "scores": {
+        "V": 1,
+        "W": 1,
+        "H": 1
+      },
+      "ability": {
+        "teamwork": 6
+      },
+      "reason": "参与战术分工，提供有限的团队执行线索。"
+    },
+    "p25-b": {
+      "scores": {
+        "A": 1,
+        "S": 1,
+        "C": 1
+      },
+      "ability": {
+        "teamwork": 5
+      },
+      "reason": "参与战术分工，提供有限的团队执行线索。"
+    },
+    "p25-extra1": {
+      "scores": {},
+      "ability": {
+        "teamwork": 2
+      },
+      "reason": "在这一具体场景中仍依赖指令或基本动作，提供初阶线索。",
+      "developing": true
+    },
+    "p26-a": {
+      "scores": {
+        "F": 1
+      },
+      "ability": {},
+      "reason": "偏好、情绪、愿望或假设，不据此推断技术水平。"
+    },
+    "p26-b": {
+      "scores": {
+        "W": 1
+      },
+      "ability": {},
+      "reason": "偏好、情绪、愿望或假设，不据此推断技术水平。"
+    },
+    "p27-a": {
+      "scores": {
+        "H": 2
+      },
+      "ability": {
+        "control": 5
+      },
+      "reason": "对持盘调度或无盘空间的理解，提供角色意识线索。"
+    },
+    "p27-b": {
+      "scores": {
+        "C": 2
+      },
+      "ability": {
+        "space": 5
+      },
+      "reason": "对持盘调度或无盘空间的理解，提供角色意识线索。"
+    },
+    "p28-a": {
+      "scores": {
+        "V": 1,
+        "H": 1
+      },
+      "ability": {
+        "pressure": 6,
+        "reading": 6,
+        "teamwork": 5
+      },
+      "reason": "要盘声中仍判断出盘窗口，提供独立决策线索。"
+    },
+    "p28-b": {
+      "scores": {
+        "A": 1,
+        "S": 1
+      },
+      "ability": {
+        "pressure": 6,
+        "reading": 6
+      },
+      "reason": "要盘声中仍判断出盘窗口，提供独立决策线索。"
+    },
+    "p29-a": {
+      "scores": {
+        "F": 1
+      },
+      "ability": {},
+      "reason": "偏好、情绪、愿望或假设，不据此推断技术水平。"
+    },
+    "p29-b": {
+      "scores": {
+        "W": 1
+      },
+      "ability": {},
+      "reason": "偏好、情绪、愿望或假设，不据此推断技术水平。"
+    },
+    "p29-c": {
+      "scores": {},
+      "ability": {},
+      "reason": "偏好、情绪、愿望或假设，不据此推断技术水平。",
+      "egg": "HUCK"
+    },
+    "p30-a": {
+      "scores": {
+        "H": 2,
+        "S": 1
+      },
+      "ability": {
+        "control": 6,
+        "space": 6
+      },
+      "reason": "出盘后继续接应或进入体系跑位，提供连续回合意识线索。"
+    },
+    "p30-b": {
+      "scores": {
+        "C": 3,
+        "G": 1
+      },
+      "ability": {
+        "space": 6,
+        "teamwork": 5
+      },
+      "reason": "出盘后继续接应或进入体系跑位，提供连续回合意识线索。"
+    },
+    "p30-extra1": {
+      "scores": {},
+      "ability": {
+        "space": 1,
+        "teamwork": 2
+      },
+      "reason": "在这一具体场景中仍依赖指令或基本动作，提供初阶线索。",
+      "developing": true,
+      "egg": "IMFW"
+    }
+  },
+  "notes": "文案在 questions.json；本文件按稳定 option id 映射。中性偏好不携带 ability。线索分不是实测水平。"
+}

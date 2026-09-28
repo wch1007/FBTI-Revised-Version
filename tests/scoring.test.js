@@ -1,87 +1,127 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { assess, validateQuestions, validAnswers } from '../scoring.js';
+import { assess, validateQuestions, validAnswers, packAnswers, unpackAnswers } from '../scoring.js';
+const read = p => JSON.parse(readFileSync(new URL(p, import.meta.url), 'utf8'));
+const questions = read('../questions.json'), mapping = read('../scoring-map.json'), results = read('../results.json');
+const original = read('./fixtures/original-questions.json');
+const answers = () => questions.map(() => 0);
+const score = a => assess(questions, a, mapping);
+const copy = x => structuredClone(x);
 
-const questions = JSON.parse(readFileSync(new URL('../questions.json', import.meta.url), 'utf8'));
-const results = JSON.parse(readFileSync(new URL('../results.json', import.meta.url), 'utf8'));
-const make = (skill = 0) => questions.map(q => q.kind === 'ability' ? skill : 0);
-
-test('complete beginner-friendly content and 19 valid result types', () => {
-  assert.equal(validateQuestions(questions), true);
-  assert.equal(questions.filter(q => q.kind === 'personality').length, 30);
-  assert.equal(questions.filter(q => q.kind === 'ability').length, 8);
-  assert.equal(Object.keys(results).length, 19);
-  for (const q of questions.filter(q => q.kind === 'personality')) assert.ok(q.options.some(o => o.egg === 'IMFW' || o.egg === 'CHILL'));
+test('all 30 original stems, hints, original choices and personality weights are preserved verbatim', () => {
+  assert.equal(questions.length, 30);
+  assert.equal(validateQuestions(questions, mapping), true);
+  let changedScenes = 0, extras = 0;
+  questions.forEach((q, i) => {
+    assert.equal(q.q, original[i].q); assert.equal(q.hint, original[i].hint); assert.equal(q.dim, original[i].dim);
+    original[i].options.forEach((o, j) => {
+      assert.equal(q.options[j].text, o.text);
+      const rule = mapping.rules[q.options[j].id], expected = copy(o.scores);
+      const special = expected.special; delete expected.special;
+      assert.deepEqual(rule.scores, expected);
+      if (special) assert.equal(rule.egg, Object.keys(special)[0]);
+    });
+    if (q.options.length > original[i].options.length) changedScenes++;
+    extras += q.options.length - original[i].options.length;
+  });
+  assert.equal(changedScenes, 10); assert.equal(extras, 11);
   assert.ok(questions[2].options.some(o => o.text.includes('（呆住）')));
   assert.ok(questions[2].options.some(o => o.text.includes('（乱跑）')));
+  assert.ok(!JSON.stringify(questions).includes('国家队'));
+});
+test('all 18 result codes reuse valid original PNG files and partners', () => {
+  assert.equal(Object.keys(results).length, 18);
   for (const h of 'HC') for (const s of 'SG') for (const v of 'VA') for (const f of 'FW') assert.ok(results[h+s+v+f]);
-  for (const result of Object.values(results)) for (const partner of result.partnerSuggestions) assert.ok(results[partner.code]);
+  for (const [code, r] of Object.entries(results)) {
+    assert.equal(r.image, `image/fbti/${code}.png`);
+    const bytes = readFileSync(new URL('../' + r.image, import.meta.url));
+    assert.equal(bytes.subarray(0,8).toString('hex'), '89504e470d0a1a0a');
+    for (const partner of r.partnerSuggestions) assert.ok(results[partner.code]);
+  }
 });
-test('all confused answers yield IMFW and L0 with a clipped ±2 range', () => {
-  const answers = questions.map(q => q.kind === 'ability' ? 0 : q.options.findIndex(o => o.egg === 'IMFW' || o.egg === 'CHILL'));
-  const result = assess(questions, answers);
-  assert.equal(result.code, 'IMFW'); assert.equal(result.level, 0);
-  assert.equal(result.low, 0); assert.equal(result.high, 2);
-  assert.ok(result.dimensions.every(d => d.unknown));
+test('mapping is independent of option wording and order', () => {
+  const a = answers(), baseline = score(a);
+  const q = copy(questions);
+  q[0].options[0].text = '仅修改显示文案，评分规则继续绑定原 ID';
+  assert.equal(assess(q, a, mapping).level, baseline.level);
+  const saved = packAnswers(questions, a);
+  q[0].options.reverse(); q.reverse();
+  const restored = unpackAnswers(q, saved);
+  const reordered = assess(q, restored, mapping);
+  assert.equal(reordered.code, baseline.code); assert.equal(reordered.level, baseline.level);
+  assert.deepEqual(packAnswers(q, restored), saved);
 });
-test('one confused answer does not force an egg or erase personality', () => {
-  const answers = make(2); answers[2] = 2;
-  assert.notEqual(assess(questions, answers).code, 'IMFW');
+test('new or removed option mappings cannot silently fall back to arbitrary scores', () => {
+  const missing = copy(mapping); delete missing.rules[questions[0].options[0].id];
+  assert.throws(() => validateQuestions(questions, missing), /缺少结果映射/);
+  const stale = copy(mapping); stale.rules['deleted-id'] = stale.rules['p01-a'];
+  assert.throws(() => validateQuestions(questions, stale), /未使用/);
+  const duplicate = copy(questions); duplicate[0].options[1].id = duplicate[0].options[0].id;
+  assert.throws(() => validateQuestions(duplicate, mapping));
 });
-test('novice behaviour triggers IMFW at six and repeated long-throw jokes trigger HUCK', () => {
-  const answers = make(2);
-  for (const i of [0,1,2,3,4,6]) answers[i] = questions[i].options.findIndex(o => o.egg === 'IMFW');
-  assert.equal(assess(questions, answers).code, 'IMFW');
-  const huck = make(2);
-  for (const i of [8,28]) huck[i] = questions[i].options.findIndex(o => o.egg === 'HUCK');
-  assert.equal(assess(questions, huck).code, 'HUCK');
+test('IMFW requires repeated cues; a single confused choice does not label the player', () => {
+  const a = answers(); a[2] = 2;
+  assert.notEqual(score(a).code, 'IMFW');
+  const novice = questions.map(q => q.options.some(o => o.id.includes('extra')) ? q.options.length - 1 : 0);
+  const r = score(novice);
+  assert.equal(r.code, 'IMFW'); assert.ok(r.level <= 2); assert.equal(r.low, 0);
+  assert.equal(r.developing, 9); assert.ok(r.clues.some(c => c.developing));
 });
-test('choosing safe non-diving, resting and sideline support does not lower ability', () => {
-  const answers = make(3);
-  for (const i of [5,16,18]) answers[i] = questions[i].options.findIndex(o => o.egg === 'CHILL');
-  const result = assess(questions, answers);
-  assert.equal(result.code, 'CHILL'); assert.equal(result.unfamiliar, 0);
-  assert.equal(result.level, 6);
+test('HUCK needs both original jokes; choosing dinner or resting does not lower skill', () => {
+  const a = answers(); a[8] = 2; a[28] = 2;
+  assert.equal(score(a).code, 'HUCK');
+  const b = answers(); const before = score(b).level;
+  b[7] = 2; b[18] = 2;
+  assert.equal(score(b).level, before); assert.notEqual(score(b).code, 'IMFW');
 });
-test('personality, risk appetite and aspirational skills do not award ability points', () => {
-  const a = make(2), b = make(2);
-  questions.forEach((q, i) => { if (q.kind === 'personality') b[i] = 1; });
-  assert.equal(assess(questions, a).level, assess(questions, b).level);
-  assert.equal(assess(questions, a).level, 4);
+test('emotion, ambition, desired skill, preferred role and willingness to dive do not count as ability', () => {
+  const a = answers(), baseline = score(a).level;
+  for (const i of [1,3,4,5,7,9,10,14,15,17,18,19,21,23,25,28]) {
+    for (let j = 0; j < questions[i].options.length; j++) {
+      const b = [...a]; b[i] = j;
+      assert.equal(score(b).level, baseline, `question ${i+1}, option ${j}`);
+    }
+  }
+  const b = answers(); b[5] = 2;
+  assert.equal(score(b).developing, 0);
 });
-test('top evidence gives L9 and boundary range; high self-rating needs actual experience', () => {
-  const answers = make(5), result = assess(questions, answers);
-  assert.equal(result.level, 9); assert.equal(result.low, 7); assert.equal(result.high, 9);
-  answers[questions.findIndex(q => q.axis === 'experience')] = 0;
-  const novice = assess(questions, answers);
-  assert.ok(novice.level <= 1); assert.equal(novice.experienceCapped, true); assert.equal(novice.inconsistent, true);
-  answers[questions.findIndex(q => q.axis === 'experience')] = 4;
-  assert.equal(assess(questions, answers).level, 8);
+test('high-stall decisions affect level evidence, independent of H/C and F/W labels', () => {
+  const a = answers(), b = answers(); b[8] = 2;
+  assert.ok(score(b).evidence.find(e => e.axis === 'pressure').mean < score(a).evidence.find(e => e.axis === 'pressure').mean);
+  const m = copy(mapping);
+  for (const rule of Object.values(m.rules)) rule.scores = {C: 2, G: 2, A: 2, W: 2};
+  assert.equal(assess(questions, a, m).level, score(a).level);
 });
-test('backtracking replaces an answer without accumulating obsolete scores', () => {
-  const a = make(2), before = assess(questions, a);
-  a[2] = 2; a[questions.findIndex(q => q.axis === 'throw')] = 5;
-  assess(questions, a);
-  a[2] = 0; a[questions.findIndex(q => q.axis === 'throw')] = 2;
-  assert.deepEqual(assess(questions, a), before);
+test('weak or absent evidence stays explicit, not a falsely measured zero', () => {
+  const m = copy(mapping);
+  for (const rule of Object.values(m.rules)) rule.ability = {};
+  const r = assess(questions, answers(), m);
+  assert.equal(r.insufficient, true); assert.equal(r.level, 3);
+  assert.ok(r.evidence.every(e => e.mean === null && e.count === 0));
 });
-test('all-unanswered, corrupt and out-of-range saved answers are rejected', () => {
-  const empty = questions.map(() => null);
-  assert.equal(validAnswers(questions, empty), true);
-  assert.equal(validAnswers(questions, empty, true), false);
-  assert.throws(() => assess(questions, empty));
-  for (const bad of [[], {}, null, make().map(() => -1), make().map(() => 99), make().map(() => '0')]) assert.equal(validAnswers(questions, bad), false);
+test('strong original choices may include L9 only at the top of the ±2 range', () => {
+  const r = score(answers());
+  assert.equal(r.level, 7); assert.equal(r.high, 9); assert.equal(r.low, 5);
 });
-test('10,000 varied answer paths stay finite, in bounds and resolve to an existing result', () => {
-  let seed = 7654;
+test('backtracking recomputes from current answers with no stale accumulated scores', () => {
+  const a = answers(), before = score(a); a[2] = 2; score(a); a[2] = 0;
+  assert.deepEqual(score(a), before);
+});
+test('incomplete, corrupt and deleted stored answers are handled', () => {
+  assert.throws(() => score(questions.map(() => null)));
+  for (const a of [[], {}, null, answers().map(() => -1), answers().map(() => 99), answers().map(() => '0'), new Array(30)]) assert.equal(validAnswers(questions, a), false);
+  const stored = packAnswers(questions, answers()); stored.p01 = 'deleted-option';
+  assert.equal(unpackAnswers(questions, stored)[0], null);
+  assert.ok(unpackAnswers(questions, []).every(a => a === null));
+});
+test('10,000 varied paths yield valid personalities and finite bounded ranges', () => {
+  let seed = 5678;
   const rng = () => { seed = (1664525 * seed + 1013904223) >>> 0; return seed / 2 ** 32; };
-  for (let n = 0; n < 10000; n++) {
-    const answers = questions.map(q => Math.floor(rng() * q.options.length));
-    const r = assess(questions, answers);
-    assert.ok(results[r.code]); assert.ok(Number.isInteger(r.level));
-    assert.ok(r.level >= 0 && r.level <= 9 && r.low <= r.level && r.high >= r.level);
-    assert.ok(r.low >= 0 && r.high <= 9); assert.equal(r.low, Math.max(0, r.level - 2)); assert.equal(r.high, Math.min(9, r.level + 2));
+  for (let i = 0; i < 10000; i++) {
+    const r = score(questions.map(q => Math.floor(rng() * q.options.length)));
+    assert.ok(results[r.code]); assert.ok(Number.isInteger(r.level) && r.level >= 0 && r.level <= 7);
+    assert.equal(r.low, Math.max(0, r.level - 2)); assert.equal(r.high, Math.min(9, r.level + 2));
     assert.ok(r.dimensions.every(d => d.pct >= 0 && d.pct <= 100));
   }
 });
