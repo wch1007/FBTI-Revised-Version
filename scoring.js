@@ -34,6 +34,7 @@ export function validateQuestions(questions, mapping) {
       const rule = mapping.rules[o.id];
       if (!rule || !rule.scores || !rule.ability || !rule.reason) throw new Error(`选项缺少结果映射：${o.id}`);
       if (rule.egg && !['IMFW', 'HUCK'].includes(rule.egg)) throw new Error('未知彩蛋');
+      if (rule.huckSupport !== undefined && typeof rule.huckSupport !== 'boolean') throw new Error('冒险线索标记无效');
       if (rule.rangeCeiling !== undefined && (!Number.isInteger(rule.rangeCeiling) || rule.rangeCeiling < 0 || rule.rangeCeiling > 9)) throw new Error('等级范围上限无效');
       for (const [key, value] of Object.entries(rule.scores)) {
         if (!'HCSGVAFW'.includes(key) || key.length !== 1 || !Number.isFinite(value) || value < 0) throw new Error('人格权重无效');
@@ -70,6 +71,7 @@ export function assess(questions, answers, mapping) {
   const scores = Object.fromEntries('HCSGVAFW'.split('').map(k => [k, 0]));
   const eggs = { IMFW: 0, HUCK: 0 };
   const clues = [], developingIds = new Set();
+  const huckSupportIds = new Set();
   let rangeCeiling = 9;
   const buckets = Object.fromEntries(Object.keys(mapping.axes).map(k => [k, []]));
   questions.forEach((q, i) => {
@@ -77,6 +79,7 @@ export function assess(questions, answers, mapping) {
     if (!rule) throw new Error(`缺少选项映射：${o.id}`);
     for (const [k, v] of Object.entries(rule.scores)) scores[k] += v;
     if (rule.egg in eggs) eggs[rule.egg]++;
+    if (rule.huckSupport) huckSupportIds.add(q.id);
     rangeCeiling = Math.min(rangeCeiling, rule.rangeCeiling ?? 9);
     if (rule.developing && Object.keys(rule.ability).length) developingIds.add(q.id);
     const signals = Object.entries(rule.ability);
@@ -90,7 +93,9 @@ export function assess(questions, answers, mapping) {
   const baseCode = dimensions.map(d => d.code).join('');
   // A rare persona needs a pattern across distinct scenes, not one joke or
   // an ordinary beginner answer. Deep cutting alone is not a HUCK cue.
-  const code = eggs.IMFW >= 6 && developingIds.size >= 5 ? 'IMFW' : eggs.HUCK >= 3 ? 'HUCK' : baseCode;
+  const riskTotal = scores.S + scores.G;
+  const huckEligible = eggs.HUCK >= 3 && huckSupportIds.size >= 3 && riskTotal > 0 && scores.G / riskTotal >= .65;
+  const code = eggs.IMFW >= 6 && developingIds.size >= 5 ? 'IMFW' : huckEligible ? 'HUCK' : baseCode;
   const evidence = Object.entries(mapping.axes).map(([axis, config]) => {
     const values = buckets[axis];
     const mean = values.length ? values.reduce((s, v) => s + v, 0) / values.length : null;

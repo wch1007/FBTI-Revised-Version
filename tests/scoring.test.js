@@ -77,12 +77,20 @@ test('IMFW requires repeated cues; a single confused choice does not label the p
   choose(novice, 'p23-a'); choose(novice, 'p30-a'); choose(novice, 'p08-c'); choose(novice, 'p19-c');
   assert.equal(score(novice).eggs.IMFW, 6); assert.notEqual(score(novice).code, 'IMFW');
 });
-test('HUCK needs three agreeing scenes; dinner and resting do not lower skill', () => {
+test('HUCK needs three signature scenes plus three risky decisions and a strong G preference', () => {
   const a = answers(); a[8] = 2; a[28] = 2;
   assert.notEqual(score(a).code, 'HUCK');
   choose(a, 'p23-extra2'); assert.notEqual(score(a).code, 'HUCK');
   choose(a, 'p04-extra1');
+  assert.notEqual(score(a).code, 'HUCK');
+  for (const id of ['p02-b', 'p12-b', 'p13-b']) choose(a, id);
+  assert.notEqual(score(a).code, 'HUCK'); // remaining choices still mainly cautious
+  for (const id of ['p01-b','p06-b','p11-a','p16-b','p18-b','p21-b','p24-b','p30-b']) choose(a, id);
   assert.equal(score(a).code, 'HUCK');
+  const withoutSupport = [...a]; choose(withoutSupport,'p02-a'); choose(withoutSupport,'p12-a');
+  assert.notEqual(score(withoutSupport).code, 'HUCK');
+  const withoutSignature = [...a]; choose(withoutSignature,'p29-a');
+  assert.notEqual(score(withoutSignature).code, 'HUCK');
   const b = answers(); const before = score(b).level;
   b[7] = 2; b[18] = 2;
   assert.equal(score(b).level, before); assert.notEqual(score(b).code, 'IMFW');
@@ -152,9 +160,11 @@ test('10,000 varied paths yield valid personalities and finite bounded ranges', 
   let seed = 5678;
   const rng = () => { seed = (1664525 * seed + 1013904223) >>> 0; return seed / 2 ** 32; };
   const eggs = {IMFW:0,HUCK:0};
+  let previousHuck = 0;
   for (let i = 0; i < 10000; i++) {
     const a = questions.map(q => Math.floor(rng() * q.options.length)), r = score(a);
     if (r.code in eggs) eggs[r.code]++;
+    if (r.eggs.HUCK >= 3 && r.code !== 'IMFW') previousHuck++;
     assert.ok(results[r.code]); assert.ok(Number.isInteger(r.level) && r.level >= 0 && r.level <= 7);
     const cap = questions[5].options[a[5]].id === 'p06-extra1' ? 6 : 9;
     assert.equal(r.low, Math.max(0, r.level - 2)); assert.equal(r.high, Math.min(cap, r.level + 2));
@@ -163,4 +173,5 @@ test('10,000 varied paths yield valid personalities and finite bounded ranges', 
   }
   assert.ok(eggs.IMFW > 0 && eggs.HUCK > 0);
   assert.ok(eggs.IMFW + eggs.HUCK < 500, JSON.stringify(eggs));
+  assert.ok(eggs.HUCK < previousHuck / 4, `${eggs.HUCK} vs ${previousHuck}`);
 });

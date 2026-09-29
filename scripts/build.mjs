@@ -1,4 +1,5 @@
-import { mkdir, copyFile, readFile } from 'node:fs/promises';
+import { mkdir, copyFile, readFile, writeFile } from 'node:fs/promises';
+import { createHash } from 'node:crypto';
 import { validateQuestions } from '../scoring.js';
 validateQuestions(JSON.parse(await readFile(new URL('../questions.json', import.meta.url), 'utf8')), JSON.parse(await readFile(new URL('../scoring-map.json', import.meta.url), 'utf8')));
 const output = new URL('../dist/', import.meta.url);
@@ -12,4 +13,15 @@ for (const result of Object.values(results)) {
   files.push(result.image);
 }
 for (const file of files) await copyFile(new URL('../' + file, import.meta.url), new URL(file, output));
+// One deterministic revision for the full module graph, CSS and data. Changing
+// any of them yields new URLs; old browser caches cannot mix releases.
+const textFiles = files.filter(file => /\.(js|css|json|html)$/.test(file));
+const contents = await Promise.all(textFiles.map(file => readFile(new URL('../' + file, import.meta.url), 'utf8')));
+const revision = createHash('sha256').update(contents.map(s => s.replace(/\r\n/g, '\n')).join('\n')).digest('hex').slice(0, 12);
+for (const file of ['index.html', 'app.js', 'report.js']) {
+  let content = await readFile(new URL(file, output), 'utf8');
+  content = content.replace(/(src|href)="((?:app\.js|styles\.css))"/g, `$1="$2?v=${revision}"`);
+  content = content.replace(/from '(\.\/[^']+\.js)'/g, `from '$1?v=${revision}'`);
+  await writeFile(new URL(file, output), content);
+}
 console.log(`Built ${files.length} public assets in dist/`);

@@ -1,5 +1,18 @@
 // Render a standalone share card using local browser fonts; no CDN or screenshot
 // service sees the answers. Text is measured and wrapped to avoid clipped Chinese.
+export function preferenceDetail(d) {
+  const leftWins = d.code === d.pair[0];
+  return {
+    letter: d.unknown ? `${d.pair[0]} / ${d.pair[1]}` : d.code,
+    label: d.unknown ? '随场发挥' : leftWins ? d.left : d.right,
+    share: d.unknown ? null : leftWins ? d.pct : 100 - d.pct,
+    other: d.unknown ? d.pair : leftWins ? d.pair[1] : d.pair[0],
+    otherLabel: d.unknown ? `${d.left} / ${d.right}` : leftWins ? d.right : d.left,
+    otherShare: d.unknown ? null : leftWins ? 100 - d.pct : d.pct,
+    status: d.unknown ? '两种风格，随机应变' : d.tied ? '两边都有一点' : '你的倾向',
+  };
+}
+
 export async function downloadReport(result, persona) {
   await document.fonts.ready;
   const artwork = new Image();
@@ -42,14 +55,19 @@ export async function downloadReport(result, persona) {
   text(`参考范围 L${result.low}–L${result.high}  /  全刻度 L0–L9`, 84, abilityTop + 222, 26);
   wrap(result.quip, 84, abilityTop + 276, 816, 25, ink, 41);
   y = abilityTop + 435;
-  text('四维偏好 · 风格不分高低', 64, y, 28, ink, true); y += 49;
-  for (const d of result.dimensions) {
-    text(`${d.left} / ${d.right}`, 64, y, 23);
-    const label = d.unknown ? '随场发挥' : d.tied ? '两边都有一点' : `${d.pct > 50 ? d.left : d.right} ${Math.max(d.pct, 100 - d.pct)}%`;
-    text(label, 675, y, 21, muted);
-    rect(64, y + 17, 872, 9, '#dde3d3', 4); rect(64, y + 17, Math.max(4, 872 * d.pct / 100), 9, d.unknown ? '#adb7a6' : '#81965f', 4); y += 72;
-  }
-  y = wrap('趣味预估，上下浮动最多 2 级，以参考范围为准。人格和等级仅供娱乐，真正的实力，场上见。', 64, y + 18, 868, 21, muted, 35);
+  text(`你的 FBTI 人格 · ${result.code}`, 64, y, 32, ink, true); y += 42;
+  text(result.code === result.baseCode ? persona.title : `${persona.title} / 场上偏好 ${result.baseCode}`, 64, y, 23, muted); y += 26;
+  result.dimensions.forEach((d, i) => {
+    const p = preferenceDetail(d), x = 64 + (i % 2) * 446, top = y + Math.floor(i / 2) * 236;
+    rect(x, top, 426, 218, '#e7efd5', 18);
+    text(d.title, x + 22, top + 34, 20, muted);
+    text(p.letter, x + 22, top + 106, 54, ink, true);
+    text(p.label, x + 22, top + 143, 26, ink, true);
+    text(`${p.status}${p.share === null ? '' : ` ${p.share}%`}`, x + 170, top + 98, 20, muted);
+    text(`${p.other} · ${p.otherLabel}${p.otherShare === null ? '' : ` ${p.otherShare}%`}`, x + 22, top + 191, 19, muted);
+  });
+  y += 472;
+  y = wrap('人格和等级仅供娱乐；等级上下最多浮动 2 级，以参考范围为准。', 64, y + 18, 868, 21, muted, 35);
   text('原作 RED / 红姐 · 改编 wch1007', 64, y + 30, 19, muted);
   text('wch1007.github.io/FBTI-Revised-Version/', 64, y + 68, 21, ink, true);
   const output = document.createElement('canvas'); output.width = 1000; output.height = y + 106;

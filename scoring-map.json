@@ -1,5 +1,5 @@
 {
-  "version": "scene-v3.1",
+  "version": "scene-v3.2",
   "axes": {
     "control": {
       "label": "盘权处理",
@@ -66,7 +66,8 @@
         "G": 2
       },
       "ability": {},
-      "reason": "偏好、情绪、愿望或假设，不据此推断技术水平。"
+      "reason": "偏好、情绪、愿望或假设，不据此推断技术水平。",
+      "huckSupport": true
     },
     "p03-a": {
       "scores": {
@@ -298,7 +299,8 @@
         "reading": 5,
         "space": 5
       },
-      "reason": "接盘后的第一观察目标，提供出盘准备线索。"
+      "reason": "接盘后的第一观察目标，提供出盘准备线索。",
+      "huckSupport": true
     },
     "p12-c": {
       "scores": {
@@ -337,7 +339,8 @@
         "reading": 6,
         "control": 5
       },
-      "reason": "能提出针对联防的推进思路，提供防守阅读线索。"
+      "reason": "能提出针对联防的推进思路，提供防守阅读线索。",
+      "huckSupport": true
     },
     "p13-extra1": {
       "scores": {},
@@ -406,7 +409,8 @@
         "F": 1
       },
       "ability": {},
-      "reason": "偏好、情绪、愿望或假设，不据此推断技术水平。"
+      "reason": "偏好、情绪、愿望或假设，不据此推断技术水平。",
+      "huckSupport": true
     },
     "p17-a": {
       "scores": {

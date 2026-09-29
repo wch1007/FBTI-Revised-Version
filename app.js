@@ -1,5 +1,5 @@
 import { assess, validateQuestions, packAnswers, unpackAnswers, VERSION } from './scoring.js';
-import { downloadReport } from './report.js';
+import { downloadReport, preferenceDetail } from './report.js';
 
 const app = document.querySelector('#app');
 const STORAGE_KEY = VERSION;
@@ -131,9 +131,18 @@ function showReport() {
       </article>
     <section class="panel persona-description"><h3>${esc(persona.title)} · 你的场上画像</h3><p>${esc(persona.desc)}</p><div class="trait-tags">${persona.pros.map(t => `<span class="partner-chip">${esc(t)}</span>`).join('')}</div></section></div>
     </div>
-    <div class="section-heading"><h2>你的场上使用说明</h2><span class="eyebrow">THE DETAILS</span></div>
-    <div class="report-grid">
-      <section class="panel"><h3>四维偏好 · 风格不分高低</h3><div class="dimensions">${r.dimensions.map(d => `<div><div class="dimension-top"><strong>${esc(d.title)}</strong><span>${d.unknown ? '随场发挥' : d.tied ? '两边都有一点' : (d.pct > 50 ? esc(d.left) : esc(d.right)) + ' ' + Math.max(d.pct, 100 - d.pct) + '%'}</span></div><div class="dimension-track"><div class="dimension-fill ${d.unknown ? 'unknown' : ''}" style="width:${d.pct}%"></div></div><div class="dimension-labels"><span>${d.pair[0]} · ${esc(d.left)}</span><span>${d.pair[1]} · ${esc(d.right)}</span></div></div>`).join('')}</div></section>
+    <section class="panel personality-overview" aria-labelledby="personality-overview-title">
+      <div class="personality-overview-top"><div><span class="eyebrow" id="personality-overview-title">你的 FBTI 人格</span><div class="identity"><strong>${r.code}</strong><span>${esc(persona.title)}</span></div></div><span class="preference-caption">${isEgg ? `场上偏好 · ${r.baseCode}` : '四个字母，四种场上倾向'}</span></div>
+      <div class="preference-cards">${r.dimensions.map(d => {
+        const p = preferenceDetail(d);
+        return `<article class="preference-card ${d.unknown || d.tied ? 'balanced' : ''}" aria-label="${esc(d.title)}：${esc(p.letter)} ${esc(p.label)}${p.share === null ? '' : ` ${p.share}%`}">
+          <span class="preference-category">${esc(d.title)}</span><div class="preference-letter">${esc(p.letter)}</div>
+          <strong class="preference-name">${esc(p.label)}</strong><div class="preference-strength">${esc(p.status)}${p.share === null ? '' : ` <b>${p.share}%</b>`}</div>
+          <div class="preference-other">${esc(p.other)} · ${esc(p.otherLabel)}${p.otherShare === null ? '' : ` <b>${p.otherShare}%</b>`}</div>
+        </article>`;
+      }).join('')}</div>
+    </section>
+    <div class="report-grid partners-grid">
       <section class="panel"><span class="eyebrow">YOUR PEOPLE</span><h3 style="margin-top:10px">适合和你一起接盘的人</h3><div class="partner-chips">${persona.partnerSuggestions.map(p => `<span class="partner-chip">${esc(p.name)}<b>${esc(p.code)}</b></span>`).join('')}</div><p class="micro" style="margin-bottom:0">${esc(persona.logic)}</p></section>
     </div>
     <div class="report-actions"><button class="primary" id="download">保存结果图 ↓</button><button class="secondary" id="share">复制分享文案 ↗</button><button class="secondary" id="retry">再测一次 ↻</button><button class="text-button" id="clear-report">清除本机答题记录</button></div>
@@ -169,7 +178,9 @@ el('about-dialog').addEventListener('click', e => { if (e.target === el('about-d
 async function init() {
   try {
     const data = await Promise.all(['questions.json', 'results.json', 'scoring-map.json'].map(async file => {
-      const response = await fetch(new URL(file, import.meta.url), { cache: 'no-cache' });
+      const url = new URL(file, import.meta.url);
+      url.search = new URL(import.meta.url).search;
+      const response = await fetch(url, { cache: 'no-cache' });
       if (!response.ok) throw new Error('加载失败');
       return response.json();
     }));
